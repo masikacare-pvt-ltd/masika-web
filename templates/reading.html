@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masika Care | Story Reading</title>
+    
+    <!-- PWA Setup: Theme Color and Browser Tab Logo -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/jpeg" href="../static/logo.jpg">
+    <link rel="apple-touch-icon" href="../static/logo.jpg">
+    <link rel="manifest" href="../static/manifest.json">
+    
+    <!-- Premium Google Fonts: Playfair Display (Cinematic), Outfit (Modern UI) & JetBrains Mono (Deep Tech Data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GLOBAL VARIABLES & SYSTEM MATRIX --- */
+        :root {
+            --c-white: #ffffff;
+            --c-red: #E81A2D; 
+            --c-dark: #07090f; 
+            --c-gray-text: #64748B;
+            
+            --font-cine: 'Playfair Display', serif;
+            --font-ui: 'Outfit', sans-serif;
+            --font-data: 'JetBrains Mono', monospace;
+            
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(10, 10, 10, 0.08);
+            --accent-glow: rgba(232, 26, 45, 0.25);
+            
+            --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #F8FAFC;
+            color: var(--c-dark);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255,255,255,1) 30%, transparent 70%),
+                radial-gradient(circle at 90% 90%, rgba(226, 232, 240, 0.6) 20%, transparent 80%),
+                radial-gradient(circle at 50% 50%, rgba(232, 26, 45, 0.015) 0%, transparent 60%), 
+                linear-gradient(to right, rgba(7,9,15,0.018) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(7,9,15,0.018) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 5vw 5vw, 5vw 5vw;
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--c-red); color: var(--c-white); }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        h1, h2, h3, h4, .cinematic-text { font-family: var(--font-cine); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+        .data-mono { font-family: var(--font-data); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+        a { text-decoration: none; color: inherit; }
+
+        @keyframes pulseRedMinimal { 0%, 100% { transform: scale(0.8); opacity: 0.5; } 50% { transform: scale(1.3); opacity: 1; } }
+
+        /* ADVANCED MODAL (New Page System) */
+        .story-modal {
+            position: fixed; inset: 0; background: #ffffff; z-index: 99999;
+            display: flex; justify-content: center; overflow-y: auto; overflow-x: hidden;
+            opacity: 0; pointer-events: none; transform: translateY(20px);
+            transition: opacity 0.8s var(--ease-cinematic), transform 0.8s var(--ease-cinematic);
+        }
+        .story-modal.active { opacity: 1; pointer-events: auto; transform: none; }
+        
+        .sm-bg-grid {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            background-image: 
+                linear-gradient(to right, rgba(10,10,10,0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(10,10,10,0.015) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        
+        .sm-ambient-glow {
+            position: fixed; top: 10%; left: 15%; width: 45vw; height: 45vw;
+            background: radial-gradient(circle, rgba(232,26,45,0.04) 0%, transparent 70%);
+            border-radius: 50%; pointer-events: none; z-index: 0; filter: blur(40px);
+            animation: slowFloatOrb 15s ease-in-out infinite alternate;
+        }
+        @keyframes slowFloatOrb {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(10vw, 5vh) scale(1.1); }
+        }
+
+        .sm-watermark-text {
+            position: fixed; left: 1%; top: 50%; transform: translateY(-50%) rotate(-90deg);
+            font-family: var(--font-data); font-size: 6vw; color: rgba(10,10,10,0.012);
+            font-weight: 800; letter-spacing: -0.05em; pointer-events: none; z-index: 0;
+        }
+
+        .sm-giant-quote {
+            position: absolute; top: 160px; right: 5%; font-family: var(--font-cine);
+            font-size: 28rem; color: rgba(232,26,45,0.025); line-height: 0; z-index: 0;
+            pointer-events: none; transform: rotate(5deg);
+        }
+
+        .sm-top-blur {
+            position: fixed; top: 0; left: 0; width: 100%; height: 120px;
+            background: linear-gradient(to bottom, rgba(255,255,255,1) 30%, transparent);
+            z-index: 5; pointer-events: none;
+        }
+        .sm-progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px; background: var(--c-red);
+            width: 0%; z-index: 100000; transition: width 0.1s; box-shadow: 0 0 10px var(--c-red);
+        }
+        .sm-hud-line { position: fixed; background: rgba(10,10,10,0.05); z-index: 1; pointer-events: none; }
+        .sm-hud-left { top: 0; bottom: 0; left: 40px; width: 1px; }
+        .sm-hud-right { top: 0; bottom: 0; right: 40px; width: 1px; }
+
+        /* FIXED CLOSE BUTTON (Non-Scrolling & Perfectly Sized) */
+        .sm-close {
+            position: fixed; top: 30px; right: 30px; width: 35px; height: 35px;
+            background: rgba(10,10,10,0.03); border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.4s ease; z-index: 100001; border: 1px solid transparent;
+            -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+        }
+        .sm-close:hover { background: var(--c-red); border-color: var(--c-red); transform: rotate(90deg); box-shadow: 0 10px 25px rgba(232,26,45,0.3); }
+        .sm-close svg { stroke: var(--c-dark); width: 15px; height: 15px; transition: 0.4s; }
+        .sm-close:hover svg { stroke: var(--c-white); }
+        
+        .sm-content { 
+            max-width: 850px; width: 100%; position: relative; z-index: 2;
+            padding: 120px 5% 120px; 
+        }
+        
+        .sm-header-meta {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;
+            position: relative; padding-bottom: 15px; border-bottom: 1px solid rgba(10,10,10,0.05);
+        }
+        .sm-header-meta::after {
+            content: ''; position: absolute; bottom: -2px; left: 0; width: 30px; height: 3px; background: var(--c-red);
+        }
+        .sm-tag { 
+            font-family: var(--font-data); font-size: 0.75rem; color: var(--c-red); letter-spacing: 0.2em; 
+            text-transform: uppercase; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
+        .pulse-dot {
+            width: 6px; height: 6px; border-radius: 50%; background: var(--c-red); 
+            box-shadow: 0 0 10px var(--accent-glow); animation: pulseRedMinimal 2s infinite;
+        }
+        .sm-reading-time {
+            font-family: var(--font-data); font-size: 0.65rem; color: var(--c-gray-text); 
+            letter-spacing: 0.15em; font-weight: 600;
+        }
+        
+        /* Advanced 3D Read Cover Image CSS (Ultra Smooth Minimal Shadow) */
+        .sm-readcover-wrapper {
+            margin: 40px 0 60px;
+            width: 100%;
+            border-radius: 24px;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+        }
+        .sm-readcover-img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 24px;
+            display: block;
+            filter: grayscale(10%);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: all 0.8s var(--ease-cinematic);
+        }
+        .sm-readcover-wrapper:hover .sm-readcover-img {
+            transform: scale(1.02);
+            filter: grayscale(0%);
+            box-shadow: 0 15px 40px rgba(232, 26, 45, 0.05); 
+        }
+
+        .sm-title { 
+            font-family: var(--font-cine); 
+            font-size: clamp(3.5rem, 7vw, 6.5rem); 
+            line-height: 0.95; 
+            margin-bottom: 40px; 
+            font-weight: 400; 
+            letter-spacing: -0.05em; 
+            background: linear-gradient(135deg, var(--c-dark) 20%, #4a1515 80%, var(--c-red) 100%);
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0px 10px 20px rgba(232, 26, 45, 0.15));
+        }
+        .sm-title::before {
+            content: '';
+            position: absolute;
+            left: -40px;
+            top: 15px;
+            height: calc(100% - 30px);
+            width: 3px;
+            background: var(--c-red);
+            border-radius: 2px;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .sm-divider { 
+            width: 100%; height: 1px; background: linear-gradient(90deg, rgba(232,26,45,0.2), transparent); 
+            margin-bottom: 60px; position: relative; z-index: 2;
+        }
+        .sm-divider-glow {
+            position: absolute; top: -1px; left: 0; height: 3px; width: 50px;
+            background: linear-gradient(90deg, var(--c-red), transparent);
+            filter: drop-shadow(0 0 5px var(--accent-glow));
+        }
+        
+        .sm-text { 
+            font-size: 1.25rem; color: #334155; line-height: 1.95; margin-bottom: 60px; 
+            font-weight: 400; font-family: var(--font-ui); position: relative; z-index: 2;
+        }
+        .sm-text::first-letter {
+            font-family: var(--font-cine); float: left; font-size: 5rem; line-height: 0.8;
+            padding-top: 4px; padding-right: 12px; color: var(--c-red); font-style: italic;
+        }
+        
+        /* Fixed & Visible Author Block - Uncluttered and Spacious */
+        .sm-author-block {
+            display: flex; flex-direction: column; align-items: flex-end; margin-top: 60px; 
+            padding-top: 40px; border-top: 1px solid rgba(10,10,10,0.05); position: relative; z-index: 10;
+            margin-bottom: 80px; 
+            padding-bottom: 60px;
+        }
+        .sm-author-label { 
+            font-family: var(--font-data); font-size: 0.65rem; color: var(--c-red); 
+            letter-spacing: 0.25em; text-transform: uppercase; margin-bottom: 10px; font-weight: 700; 
+        }
+        .sm-author { 
+            text-align: right; font-family: var(--font-cine); font-style: italic; 
+            font-size: 2rem; color: var(--c-dark); font-weight: 500; 
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .sm-content { padding: 80px 5% 10vh; }
+            .sm-title { font-size: 2.5rem; }
+            .sm-title::before { left: -15px; }
+            .sm-hud-line { display: none; }
+            .sm-ambient-glow { display: none; }
+            .sm-watermark-text { display: none; }
+            .sm-giant-quote { right: -5%; font-size: 15rem; top: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- STORY MODAL PAGE STRUCTURE -->
+    <div class="story-modal" id="storyModal">
+        <div class="sm-progress-bar" id="smProgressBar"></div>
+        <div class="sm-bg-grid"></div>
+        
+        <div class="sm-ambient-glow"></div>
+        <div class="sm-watermark-text">TELEMETRY</div>
+        <div class="sm-giant-quote">“</div>
+
+        <div class="sm-top-blur"></div>
+        <div class="sm-hud-line sm-hud-left"></div>
+        <div class="sm-hud-line sm-hud-right"></div>
+
+        <div class="sm-close" id="smClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        
+        <div class="sm-content">
+            <div class="sm-header-meta">
+                <span class="sm-tag"><span class="pulse-dot"></span> Telemetry Log</span>
+                <span class="sm-reading-time">03 MIN READ</span>
+            </div>
+            
+            <div class="sm-readcover-wrapper">
+                <img src="../static/readcover.jpg" alt="Read Cover" class="sm-readcover-img">
+            </div>
+
+            <h2 class="sm-title" id="smTitle">Loading Story...</h2>
+            
+            <div class="sm-divider">
+                <div class="sm-divider-glow"></div>
+            </div>
+            
+            <div class="sm-text" id="smText">Please wait while the telemetry log is retrieved.</div>
+            
+            <div class="sm-author-block">
+                <span class="sm-author-label">STORY BY</span>
+                <div class="sm-author" id="smAuthor">Masika System</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR DATA POPULATION & ANIMATIONS -->
+    <script>
+        const storyData = {
+            1: { title: "A Very British Period Story", text: "The day Queen Elizabeth II passed away, my partner and I were watching the news together. It was one of those moments that felt historic, and the coverage was on every channel. Around the same time, I was on my period and suddenly got hit with some of the worst cramps I'd experienced in months.<br><br>I quietly went into the bedroom, curled up under a blanket, and started crying from the pain. A few minutes later, my partner came in looking genuinely concerned. He wrapped his arms around me, gave me a cuddle, and started saying things like, “She lived a long life,” and “She’s probably at peace now.”<br><br>I was completely confused.<br><br>After a few awkward moments, we both realized what had happened. He thought I was crying because the Queen had died. In reality, I was crying because my uterus had decided to declare war on me.<br><br>Once he figured it out, he immediately switched into support mode. He got me a hot water bottle, drove me to the store, and let me point out the exact pain relief, sanitary products, and comfort snacks I needed because he didn't want to accidentally buy the wrong thing.<br><br>It started as a funny misunderstanding, but I still remember how caring he was once he understood what was really going on.", author: "Ananya, Odisha" },
+            2: { title: "My Story, My Choice, My Power", text: "I actually had a positive introduction to periods through school. We attended educational classes and received starter kits with information and supplies.<br><br>The difficult part came later.<br><br>When I finally got my period, I asked my mother not to tell my stepfather. She ignored that request, and something about that moment changed our relationship. I stopped sharing personal things with her after that.<br><br>Years later, I struggled with body image and complicated feelings around menstruation. For a long time I used methods that allowed me to avoid dealing with my cycle altogether.<br><br>Eventually, I began learning more about fertility, menstrual health, and my own body.<br><br>That knowledge changed everything.<br><br>I realized that understanding my cycle wasn't something to fear—it was something that could empower me.<br><br>The journey wasn't easy, but it helped me reclaim ownership of my own story.", author: "Ritu, Bihar" },
+            3: { title: "Not Perfect, But It Was My Start", text: "My mom explained periods to me before they happened.<br><br>She told me about blood, pads, and growing up. When I eventually got my first period, I called her from the bathroom and she calmly brought me clean underwear and a pad.<br><br>What she didn't tell me about were the other symptoms.<br><br>The cramps. The mood changes. The exhaustion.<br><br>When those arrived, I was terrified.<br><br>Each time something new happened, she would explain that it was connected to my period. Looking back, she was doing her best with the information and cultural attitudes she had grown up with.<br><br>The one thing I wish I'd heard more often was that menstruation wasn't something to be ashamed of.<br><br>Still, despite the gaps in the conversation, she gave me a starting point—and sometimes that's where confidence begins.", author: "Meera, Rajasthan" },
+            4: { title: "Prepared, Supported, Always", text: "Starting when I was about ten years old, my mom kept two pads tucked inside the small zippered pocket of my backpack.<br><br>One day she sat down with me and explained how to use them. It wasn't a dramatic conversation or a scary lecture.<br><br>She simply said:<br><br>\"You never know when you'll need one. Or when a friend might.\"<br><br>She explained that the school nurse would usually have supplies, but having your own was often more comfortable and convenient.<br><br>What I loved most was how matter-of-fact she was. She treated periods like a normal part of life.<br><br>There was no fear. No shame.<br><br>Just preparation, confidence, and the understanding that women help each other because they've all been there too.", author: "Priya, Kerala" },
+            5: { title: "Weed, Warmth & Period Relief", text: "When I was a teenager, I wasn't very experienced at dealing with the severe cramps that came with my periods. Every month felt overwhelming, and I had very few coping strategies.<br><br>One summer, a friend from California came to visit. She was the kind of person who could make anyone laugh, and she happened to be a bit of a pothead at the time.<br><br>One evening I was lying in bed, miserable and crying because of period pain. Seeing how bad I felt, she packed a bowl and convinced me to give it a try. I had never tried anything like that before and was honestly nervous.<br><br>I'm not recommending it to anyone, but what I remember most was the feeling of relief. The pain that had been consuming my attention seemed to fade almost immediately. More importantly, I stopped feeling trapped inside the discomfort.<br><br>The thing that stayed with me, though, wasn't the pain relief itself. It was how caring my friend was. She stayed with me, made sure I felt safe, kept me laughing, and turned what could have been a terrible day into a memory I still smile about years later.", author: "Simran, Punjab" },
+            6: { title: "From My Pain to Their Powerr", text: "I experienced precocious puberty and began menstruating much earlier than most of my peers.<br><br>The experience was incredibly difficult.<br><br>I felt isolated, confused, and unprepared for what was happening. It remains one of the hardest periods of my life, and I wouldn't wish that experience on anyone.<br><br>But over time, something changed.<br><br>Instead of letting that experience define me negatively, I chose to use it as motivation.<br><br>Today, I work as a puberty educator.<br><br>Every conversation I have with young people is an opportunity to provide the support, information, and reassurance that I wish I had received.<br><br>If I can help even one child feel informed instead of afraid, then my difficult beginning has been transformed into something meaningful.<br><br>My story started with pain.<br><br>But now, it helps create power for others. ❤️", author: "Kavita, Maharashtra" },
+            7: { title: "Kindness Made My First Period Better", text: "I got my first period when I was ten years old while visiting my dad. That meant the person helping me wasn't my mom—it was my stepmom.<br><br>At the time, we weren't especially close, and I was scared and overwhelmed. I didn't know what was happening and immediately started crying.<br><br>My stepmom sat beside me and calmly explained everything. She showed me how to use a tampon and reassured me that nothing about what was happening was strange or shameful.<br><br>Then she said something I've never forgotten:<br><br>\"Half the people in the world experience this. Every month. This is nothing to be scared of and nothing to be ashamed of.\"<br><br>Those words completely changed how I saw menstruation.<br><br>Instead of feeling embarrassed, I felt connected. Instead of feeling broken, I felt normal.<br><br>More than thirty years later, I still remember that conversation.", author: "Lakshmi, Tamil Nadu" },
+            8: { title: "Thanks, Dad. You Got It Right.", text: "My mom passed away before I ever got my first period.<br><br>Naturally, that meant my dad had to step into a role he probably never expected.<br><br>To his credit, he handled it beautifully.<br><br>He made sure there were supplies available, learned about different products, and explained things as best as he could. He wasn't perfect, but he never pretended periods were embarrassing or something to hide.<br><br>What he got right was the atmosphere.<br><br>He made sure I felt safe asking questions. He never made me feel awkward. He always kept supplies stocked and reminded me that everyone's experience is different.<br><br>Looking back, I don't remember whether every explanation was technically correct.<br><br>I remember feeling supported.<br><br>And that's what mattered most.", author: "Aisha, Karnataka" },
+            9: { title: "He's Where the Bar Is", text: "For years, I rarely had period problems because, as it turned out, I wasn't really having regular periods at all. Later I was diagnosed with PCOS.<br><br>The first truly painful period I experienced came after a failed fertility treatment. The physical pain was intense, but the emotional pain was even worse. I was grieving the fact that I wasn't pregnant while also dealing with cramps so severe I could barely stand.<br><br>My husband immediately took a day off work.<br><br>Before the pain became unbearable, he took me to a petting zoo because he knew being around animals would lift my spirits. Later, he ran me a warm bath and, while I was soaking, rushed out to buy chocolate and a cute card.<br><br>What makes this story special isn't that single day.<br><br>It's that this is who he is all the time.<br><br>Years later, as exhausted parents navigating sleep regressions and chaos, he's still the first person to offer help. He's still the person who says, \"Go rest. I've got this.\"<br><br>People often talk about how low the bar is. My husband is where the bar should be.", author: "Sneha, Gujarat" },
+            10: { title: "Always Known, Always Supported", text: "As far back as I can remember, periods were simply part of life.<br><br>There was never a big reveal or awkward conversation. My parents talked about them openly, and because of that, I never grew up feeling embarrassed.<br><br>My mom struggled with painful, heavy periods, and my dad was incredibly supportive. When I started having similar issues, both of them stepped in without hesitation.<br><br>If I bled through clothes at school, Dad would bring replacements. If I needed medication, he picked it up. If I needed a doctor's appointment, they both showed up.<br><br>Now I have four daughters of my own.<br><br>I've tried to raise them with the same openness. Periods are discussed honestly, factually, and without shame.<br><br>The only thing they've found truly shocking was the day my husband accidentally bought giant overnight pads and they couldn't stop laughing at how enormous they were.<br><br>And honestly? That's exactly how it should be.", author: "Divya, Assam" }
+        };
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // Get ID from URL or default to 1
+            const urlParams = new URLSearchParams(window.location.search);
+            const storyId = urlParams.get('id') || 1; 
+
+            const smTitle = document.getElementById('smTitle');
+            const smText = document.getElementById('smText');
+            const smAuthor = document.getElementById('smAuthor');
+            
+            // Populate content
+            if(storyData[storyId]) {
+                smTitle.innerHTML = storyData[storyId].title;
+                smText.innerHTML = storyData[storyId].text;
+                smAuthor.innerHTML = storyData[storyId].author;
+            }
+
+            const storyModal = document.getElementById('storyModal');
+            
+            // Smooth Entry Animation trigger
+            setTimeout(() => {
+                storyModal.classList.add('active');
+            }, 50);
+
+            // Progress bar logic
+            storyModal.addEventListener('scroll', () => {
+                const scrollTop = storyModal.scrollTop;
+                const scrollHeight = storyModal.scrollHeight - storyModal.clientHeight;
+                const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+                document.getElementById('smProgressBar').style.width = scrollPercent + '%';
+            });
+
+            // Smooth Exit Animation back to index
+            document.getElementById('smClose').addEventListener('click', () => {
+                storyModal.classList.remove('active');
+                setTimeout(() => {
+                    window.location.href = '/#stories';
+                }, 800); // Wait for CSS transition (0.8s) before navigating
+            });
+        });
+    </script>
+</body>
+</html>

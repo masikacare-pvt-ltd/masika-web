@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masika Care | Join The Revolution</title>
+    
+    <!-- PWA Setup: Theme Color and Browser Tab Logo -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <link rel="icon" type="image/jpeg" href="../static/logo.jpg">
+    <link rel="apple-touch-icon" href="../static/logo.jpg">
+    <link rel="manifest" href="../static/manifest.json">
+    
+    <!-- Premium Google Fonts: Playfair Display (Cinematic), Outfit (Modern UI) & JetBrains Mono (Deep Tech Data) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for 2026-level Scroll Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollToPlugin.min.js"></script>
+
+    <style>
+        /* --- GLOBAL VARIABLES & SYSTEM MATRIX --- */
+        :root {
+            --c-white: #ffffff;
+            --c-red: #E81A2D; 
+            --c-dark: #07090f; 
+            --c-gray-text: #64748B;
+            
+            --font-cine: 'Playfair Display', serif;
+            --font-ui: 'Outfit', sans-serif;
+            --font-data: 'JetBrains Mono', monospace;
+            
+            --glass-bg: rgba(255, 255, 255, 0.4);
+            --glass-border: rgba(10, 10, 10, 0.08);
+            --accent-glow: rgba(232, 26, 45, 0.25);
+            
+            /* 2026 Premium Ultra-Smooth Physics */
+            --ease-cinematic: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.05);
+            
+            --hero-text-main: #07090f; 
+            --hero-accent: #E81A2D; 
+        }
+
+        html { scroll-behavior: smooth; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #F8FAFC;
+            color: var(--c-dark);
+            font-family: var(--font-ui);
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(255,255,255,1) 30%, transparent 70%),
+                radial-gradient(circle at 90% 90%, rgba(226, 232, 240, 0.6) 20%, transparent 80%),
+                radial-gradient(circle at 50% 50%, rgba(232, 26, 45, 0.015) 0%, transparent 60%), 
+                linear-gradient(to right, rgba(7,9,15,0.018) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(7,9,15,0.018) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 5vw 5vw, 5vw 5vw;
+            background-attachment: fixed;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--c-red); color: var(--c-white); }
+        ::-webkit-scrollbar { width: 0px; background: transparent; }
+
+        h1, h2, h3, h4, .cinematic-text { font-family: var(--font-cine); font-weight: 500; letter-spacing: -0.03em; line-height: 1.1; }
+        .data-mono { font-family: var(--font-data); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.2em; font-weight: 600; }
+        a { text-decoration: none; color: inherit; }
+
+        @keyframes spinNode { 100% { transform: rotate(360deg); } }
+
+        /* --- JOIN US MODAL (UPDATED 2026 Minimalist & Cinematic UI) --- */
+        .join-modal {
+            position: fixed; inset: 0; background: #F8FAFC; z-index: 999999;
+            display: flex; flex-direction: column; overflow-y: auto; overflow-x: hidden;
+            /* Enhanced entry physics: scales up softly from depth */
+            opacity: 0; pointer-events: none; transform: scale(0.98) translateY(15px);
+            transition: all 1s var(--ease-cinematic);
+        }
+        .join-modal.active { opacity: 1; pointer-events: auto; transform: scale(1) translateY(0); }
+        
+        .jm-bg {
+            position: fixed; inset: 0; pointer-events: none; z-index: 0;
+            /* Polished precision technical background grid */
+            background-image: radial-gradient(circle at 50% 0%, rgba(232, 26, 45, 0.05) 0%, transparent 60%),
+                              linear-gradient(to right, rgba(7, 9, 15, 0.02) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(7, 9, 15, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+
+        .jm-micro-decor { position: absolute; pointer-events: none; z-index: 1; }
+        .jm-crosshair { width: 40px; height: 40px; opacity: 0.25; animation: spinNode 30s linear infinite; }
+        /* Ultra-sharp 1px tracking lines */
+        .jm-crosshair::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: rgba(7, 9, 15, 0.15); }
+        .jm-crosshair::after { content: ''; position: absolute; left: 50%; top: 0; height: 100%; width: 1px; background: rgba(7, 9, 15, 0.15); }
+        .jm-ch-1 { top: 15%; left: 8%; }
+        .jm-ch-2 { bottom: 20%; right: 5%; }
+        
+        .jm-scan-line { position: absolute; top: 0; left: 50px; width: 1px; height: 100%; background: linear-gradient(to bottom, transparent, rgba(7, 9, 15, 0.08), transparent); z-index: 0; }
+        .jm-scan-dot { position: absolute; top: 0; left: -1.5px; width: 4px; height: 15px; background: var(--c-red); border-radius: 4px; box-shadow: 0 0 12px rgba(232, 26, 45, 0.6); animation: jmScanDrop 6s cubic-bezier(0.25, 1, 0.5, 1) infinite; }
+        @keyframes jmScanDrop { 0% { top: -5%; opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { top: 105%; opacity: 0; } }
+        
+        .jm-tech-ring { position: absolute; width: 340px; height: 340px; border: 1px solid rgba(7, 9, 15, 0.03); border-radius: 50%; top: 50%; left: 50%; transform: translate(-50%, -50%); animation: spinNode 35s linear infinite; z-index: -1; pointer-events: none;}
+        .jm-tech-ring::after { content:''; position: absolute; top: -3px; left: 50%; width: 6px; height: 6px; background: var(--c-red); border-radius: 50%; box-shadow: 0 0 12px var(--c-red); }
+
+        .jm-close {
+            position: fixed; top: 40px; right: 5%; width: 45px; height: 45px;
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(8px);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; transition: all 0.5s var(--ease-spring); z-index: 100;
+            /* Premium layered shadow for depth */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03), 0 10px 25px rgba(0,0,0,0.03), inset 0 0 0 1px rgba(7, 9, 15, 0.04);
+        }
+        .jm-close:hover { transform: rotate(90deg) scale(1.05); background: var(--c-red); box-shadow: 0 10px 25px rgba(232, 26, 45, 0.3); color: #fff; }
+        .jm-close svg { stroke: currentColor; width: 20px; height: 20px; transition: 0.4s; }
+
+        .jm-content { position: relative; z-index: 2; max-width: 1300px; margin: 0 auto; padding: 100px 5%; display: flex; flex-direction: column; align-items: center; }
+        
+        .jm-header { text-align: center; margin-bottom: 60px; position: relative; z-index: 2; }
+        
+        .jm-tag { 
+            font-family: var(--font-data); font-size: 0.75rem; color: var(--c-red); letter-spacing: 0.25em; text-transform: uppercase; font-weight: 700; 
+            margin-bottom: 20px; display: inline-flex; align-items: center; padding: 8px 18px; 
+            border: 1px solid rgba(232,26,45,0.15); border-radius: 100px; 
+            background: linear-gradient(180deg, rgba(232,26,45,0.02), rgba(232,26,45,0.05));
+            box-shadow: 0 4px 12px rgba(232, 26, 45, 0.05);
+        }
+        
+        .jm-title { font-family: var(--font-cine); font-size: clamp(3.5rem, 6vw, 5rem); color: var(--c-dark); letter-spacing: -0.04em; line-height: 1.05; margin-bottom: 20px; font-weight: 500; }
+        
+        /* High-end gradient text override applied directly to HTML's inline styled span */
+        .jm-title span {
+            background: linear-gradient(135deg, #E81A2D 0%, #B80F1F 100%) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            display: inline-block;
+            padding-right: 15px; /* prevents clipping of italic font */
+        }
+
+        .jm-main-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 80px; width: 100%; align-items: flex-start; position: relative; z-index: 2; }
+        
+        .jm-qr-section { 
+            background: #ffffff; border-radius: 30px; padding: 50px 40px; 
+            /* High-end multi-layer ambient and drop shadows */
+            box-shadow: 0 2px 8px rgba(7, 9, 15, 0.02), 0 20px 40px rgba(7, 9, 15, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1); 
+            border: 1px solid rgba(7, 9, 15, 0.04); 
+            display: flex; flex-direction: column; align-items: center; text-align: center; position: sticky; top: 120px; overflow: hidden; 
+        }
+        
+        .jm-qr-wrap { 
+            width: 220px; height: 220px; background: #F8FAFC; border-radius: 20px; padding: 15px; 
+            border: 1px solid rgba(7, 9, 15, 0.04); margin-bottom: 30px; position: relative; display:flex; justify-content:center; align-items:center; 
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.01);
+        }
+        .jm-qr-wrap img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; border-radius: 10px; position: relative; z-index: 2; }
+        
+        /* Precision crop-mark borders instead of thick red boxes */
+        .jm-qr-wrap::before, .jm-qr-wrap::after { content: ''; position: absolute; width: 15px; height: 15px; border: 1.5px solid var(--c-red); pointer-events: none; z-index: 3;}
+        .jm-qr-wrap::before { top: -1px; left: -1px; border-right: none; border-bottom: none; border-radius: 4px 0 0 0; }
+        .jm-qr-wrap::after { bottom: -1px; right: -1px; border-left: none; border-top: none; border-radius: 0 0 4px 0; }
+        
+        .jm-mail-text { font-family: var(--font-ui); font-size: 1rem; color: var(--c-gray-text); margin-bottom: 12px; position: relative; z-index: 2;}
+        
+        .jm-mail-id { 
+            font-family: var(--font-data); font-size: 1.1rem; color: var(--c-dark); font-weight: 600; letter-spacing: 0.05em; 
+            background: #ffffff; padding: 14px 28px; border-radius: 100px; display: inline-block; 
+            transition: all 0.5s var(--ease-spring); text-decoration: none; 
+            border: 1px solid rgba(7, 9, 15, 0.06); box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            position: relative; z-index: 2;
+        }
+        .jm-mail-id:hover { 
+            background: var(--c-red); color: #fff; transform: translateY(-4px); 
+            box-shadow: 0 10px 25px rgba(232, 26, 45, 0.25); border-color: var(--c-red); 
+        }
+
+        .jm-roles-section { display: flex; flex-direction: column; gap: 20px; }
+        .jm-roles-title { font-family: var(--font-cine); font-size: 2.2rem; margin-bottom: 10px; color: var(--c-dark); letter-spacing: -0.02em; }
+        
+        /* The Card: Drastic UI Shift using Shadows and Gradients */
+        .jm-role-card { 
+            background: #ffffff; 
+            border: 1px solid rgba(7, 9, 15, 0.04); 
+            border-radius: 20px; padding: 30px; display: flex; align-items: center; gap: 25px; 
+            transition: all 0.6s var(--ease-spring); cursor: crosshair; position: relative; overflow: hidden; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.01), inset 0 1px 0 rgba(255,255,255,1);
+        }
+        
+        /* Inner ambient red gradient on hover */
+        .jm-role-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(232, 26, 45, 0.02) 0%, transparent 100%);
+            opacity: 0; transition: opacity 0.6s var(--ease-cinematic); pointer-events: none; z-index: 0;
+        }
+
+        /* The refined left indicator line */
+        .jm-role-card::before { 
+            content: ''; position: absolute; left: 0; top: 15%; width: 3px; height: 70%; 
+            background: var(--c-red); transform: scaleY(0); transition: transform 0.6s var(--ease-spring); 
+            transform-origin: center; border-radius: 0 4px 4px 0; z-index: 1;
+        }
+
+        .jm-role-card:hover { 
+            transform: translateX(8px); 
+            box-shadow: 0 12px 30px -5px rgba(232, 26, 45, 0.08), 0 20px 40px -10px rgba(7, 9, 15, 0.05); 
+            border-color: rgba(232, 26, 45, 0.15); 
+        }
+        .jm-role-card:hover::before { transform: scaleY(1); }
+        .jm-role-card:hover::after { opacity: 1; }
+        
+        /* Icons */
+        .jm-role-icon { 
+            width: 60px; height: 60px; border-radius: 16px; 
+            background: #F8FAFC; border: 1px solid rgba(7, 9, 15, 0.03);
+            display: flex; align-items: center; justify-content: center; 
+            transition: all 0.6s var(--ease-spring); position: relative; z-index: 2;
+        }
+        .jm-role-card:hover .jm-role-icon { 
+            background: var(--c-red); color: #fff; transform: scale(1.1) rotate(6deg); 
+            box-shadow: 0 10px 20px rgba(232, 26, 45, 0.3); border-color: transparent;
+        }
+        .jm-role-icon svg { width: 28px; height: 28px; stroke: var(--c-dark); stroke-width: 1.5; transition: 0.6s; fill: none; }
+        .jm-role-card:hover .jm-role-icon svg { stroke: #fff; }
+        
+        .jm-role-info { display: flex; flex-direction: column; gap: 6px; position: relative; z-index: 2; }
+        .jm-role-name { font-family: var(--font-ui); font-size: 1.3rem; font-weight: 600; color: var(--c-dark); letter-spacing: -0.01em;}
+        .jm-role-desc { font-family: var(--font-data); font-size: 0.75rem; color: var(--c-gray-text); text-transform: uppercase; letter-spacing: 0.15em; font-weight: 500;}
+
+        @media (max-width: 1024px) {
+            .jm-main-layout { grid-template-columns: 1fr; }
+            .jm-qr-section { position: relative; top: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- JOIN US MODAL (2026 Minimalist UI Overlay) -->
+    <div class="join-modal" id="joinModal">
+        <div class="jm-bg"></div>
+        
+        <div class="jm-micro-decor jm-crosshair jm-ch-1"></div>
+        <div class="jm-micro-decor jm-crosshair jm-ch-2"></div>
+        <div class="jm-micro-decor jm-scan-line"><div class="jm-scan-dot"></div></div>
+        <div class="jm-micro-decor jm-tech-ring"></div>
+
+        <div class="jm-close" id="joinClose">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </div>
+        
+        <div class="jm-content">
+            <div class="jm-header">
+                <span class="jm-tag">Careers // Masika 2026</span>
+                <h2 class="jm-title">Join The<br><span style="font-style: italic; color: var(--c-red);">Revolution.</span></h2>
+            </div>
+            
+            <div class="jm-main-layout">
+                <div class="jm-qr-section">
+                    <div class="jm-qr-wrap">
+                        <img src="../static/qrcode.png" alt="Scan to Apply">
+                    </div>
+                    <p class="jm-mail-text">Mail us your resume to:</p>
+                    <a href="mailto:info.masika@gmail.com" class="jm-mail-id">info.masika@gmail.com</a>
+                </div>
+                
+                <div class="jm-roles-section">
+                    <h3 class="jm-roles-title">Open Nodes</h3>
+                    
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">Social Media Content Creator</span>
+                            <span class="jm-role-desc">Digital Narrative & Brand Engineering</span>
+                        </div>
+                    </div>
+
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">Cinematic Video Editor</span>
+                            <span class="jm-role-desc">Visual Motion & Aesthetics</span>
+                        </div>
+                    </div>
+
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">Machine Learning Developer</span>
+                            <span class="jm-role-desc">AI Logic & Deep Tech Vectors</span>
+                        </div>
+                    </div>
+
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">IoT Hardware Engineer</span>
+                            <span class="jm-role-desc">Offline Ecosystems & Microcontrollers</span>
+                        </div>
+                    </div>
+
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">App Developer</span>
+                            <span class="jm-role-desc">Fluid UI/UX & Native Execution</span>
+                        </div>
+                    </div>
+
+                    <div class="jm-role-card">
+                        <div class="jm-role-icon">
+                            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                        <div class="jm-role-info">
+                            <span class="jm-role-name">Business Growth Lead</span>
+                            <span class="jm-role-desc">Strategic Expansion & Partnerships</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Smooth Entry Animation trigger
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.getElementById('joinModal').classList.add('active');
+            }, 50);
+        });
+
+        // Smooth Exit Animation back to index
+        document.getElementById('joinClose').addEventListener('click', () => {
+            document.getElementById('joinModal').classList.remove('active');
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 800); // Wait for CSS transition (0.8s) before navigating
+        });
+    </script>
+</body>
+</html>

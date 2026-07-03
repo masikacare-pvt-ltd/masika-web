@@ -3,7 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Masika Care | The Future of Menstrual Health</title>
+    <!-- Enterprise SEO Implementation -->
+    <title>Masika Care | Premium Healthcare Products | Masika Pvt Ltd</title>
+    <meta name="description" content="Masika Care by Masika Pvt Ltd is the future of menstrual health. We provide premium healthcare products and solutions for women across India.">
+    <link rel="canonical" href="https://www.masikacare.com/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <meta name="author" content="Masika Pvt Ltd">
+    <meta name="publisher" content="Masika Pvt Ltd">
+    <meta name="application-name" content="Masika Care">
+    <meta name="generator" content="Custom HTML/Flask">
+    <meta name="keywords" content="Masika, Masika Care, Masika Pvt Ltd, Masika Healthcare, Masika medical, Masika products, Masika India">
+    <meta name="geo.region" content="IN">
+    <meta name="geo.placename" content="India">
+
+    <!-- Open Graph (OG) Tags -->
+    <meta property="og:title" content="Masika Care | Premium Healthcare Products">
+    <meta property="og:description" content="Discover premium healthcare and menstrual health products by Masika Pvt Ltd.">
+    <meta property="og:image" content="https://www.masikacare.com/static/logo.jpg">
+    <meta property="og:url" content="https://www.masikacare.com/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Masika Care">
+    <meta property="og:locale" content="en_IN">
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Masika Care | Premium Healthcare Products">
+    <meta name="twitter:description" content="Discover premium healthcare and menstrual health products by Masika Pvt Ltd.">
+    <meta name="twitter:image" content="https://www.masikacare.com/static/logo.jpg">
+    <meta name="twitter:site" content="@MasikaCare">
+
+    <!-- JSON-LD Structured Data (Organization & WebSite) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.masikacare.com/#organization",
+          "name": "Masika Pvt Ltd",
+          "alternateName": ["Masika", "Masika Care", "Masika Healthcare"],
+          "url": "https://www.masikacare.com/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.masikacare.com/static/logo.jpg"
+          },
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "areaServed": "IN",
+            "availableLanguage": "en"
+          }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.masikacare.com/#website",
+          "url": "https://www.masikacare.com/",
+          "name": "Masika Care",
+          "publisher": {
+            "@id": "https://www.masikacare.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://www.masikacare.com/?q={search_term_string}",
+            "query-input": "required name=search_term_string"
+          },
+          "inLanguage": "en-IN"
+        },
+        {
+          "@type": "WebPage",
+          "@id": "https://www.masikacare.com/#webpage",
+          "url": "https://www.masikacare.com/",
+          "name": "Masika Care | Premium Healthcare Products | Masika Pvt Ltd",
+          "isPartOf": {
+            "@id": "https://www.masikacare.com/#website"
+          },
+          "about": {
+            "@id": "https://www.masikacare.com/#organization"
+          }
+        }
+      ]
+    }
+    </script>
     
    <!-- Native App Icon & Full-Screen Configuration -->
     <meta name="theme-color" content="#E81A2D">
@@ -67,6 +148,8 @@
             background-attachment: fixed;
             -webkit-font-smoothing: antialiased;
         }
+
+        img { max-width: 100%; height: auto; }
 
         ::selection { background: var(--c-red); color: var(--c-white); }
         
@@ -186,6 +269,7 @@
             padding: 8px 22px; background: var(--hero-text-main); color: var(--c-white);
             border-radius: 100px; font-family: var(--font-ui); font-style: normal; font-size: 0.95rem; font-weight: 600; text-transform: capitalize; letter-spacing: 0;
             transition: all 0.6s var(--ease-cinematic); box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; text-decoration: none;
         }
         .nav-contact-btn:hover { background: var(--hero-accent); transform: translateY(-2px); box-shadow: 0 10px 25px var(--accent-glow); }
 
@@ -1545,7 +1629,7 @@
             .sm-title { font-size: 2rem; }
             .footer-advanced-grid { padding: 0 15px; gap: 40px; }
             .nav-actions { gap: 10px; }
-            .nav-contact-btn { padding: 6px 12px; font-size: 0.8rem; }
+            .nav-contact-btn { padding: 6px 12px; font-size: 0.8rem; white-space: nowrap; }
             .hero-decor { display: none !important; }
             .section-padding { padding: 80px 5%; }
             .footer-bottom-bar { padding: 20px 5%; }
@@ -1657,6 +1741,7 @@
         </div>
     </nav>
 
+    <main id="main-content">
     <!-- HERO SECTION -->
     <section class="hero section-padding">
         
@@ -1785,7 +1870,7 @@
                 <div class="about-decor-line"></div>
 
                 <div class="cycle-infographic card-3d mag-tgt">
-                    <img src="../static/about.jpg" alt="Masika Uterus Cycle" class="uterus-center">
+                    <img src="../static/about.jpg" alt="Masika Uterus Cycle" class="uterus-center" loading="lazy" width="3264" height="3264">
                     
                     <svg class="cycle-svg" viewBox="-150 -150 1000 1000" style="overflow: visible;">
                         <defs>
@@ -2024,43 +2109,43 @@
         
         <div class="gallery-grid fade-up">
             <div class="gallery-item gi-1 card-3d mag-tgt">
-                <img src="../static/rural.jpg" alt="Rural Connectivity">
+                <img src="../static/rural.jpg" alt="Rural Connectivity" loading="lazy" width="1536" height="1024">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 01</span><span class="go-title">Rural Connectivity</span></div>
             </div>
             <div class="gallery-item gi-2 card-3d mag-tgt">
-                <img src="../static/podcast.jpg" alt="Podcast Series">
+                <img src="../static/podcast.jpg" alt="Podcast Series" loading="lazy" width="1536" height="1024">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 02</span><span class="go-title">Podcast Series</span></div>
             </div>
             <div class="gallery-item gi-3 card-3d mag-tgt">
-                <img src="../static/local.jpg" alt="Local Outreaches">
+                <img src="../static/local.jpg" alt="Local Outreaches" loading="lazy" width="1672" height="941">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 03</span><span class="go-title">Local Outreaches</span></div>
             </div>
             <div class="gallery-item gi-4 card-3d mag-tgt">
-                <img src="../static/AI.jpg" alt="AI Diagnostics">
+                <img src="../static/AI.jpg" alt="AI Diagnostics" loading="lazy" width="1983" height="793">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 04</span><span class="go-title">AI Diagnostics</span></div>
             </div>
             <div class="gallery-item gi-5 card-3d mag-tgt">
-                <img src="../static/iot.jpg" alt="Offline IoT Rollout">
+                <img src="../static/iot.jpg" alt="Offline IoT Rollout" loading="lazy" width="1122" height="1402">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 05</span><span class="go-title">Offline IoT Rollout</span></div>
             </div>
             <div class="gallery-item gi-6 card-3d mag-tgt">
-                <img src="../static/camp.jpg" alt="Women's Health Camp">
+                <img src="../static/camp.jpg" alt="Women's Health Camp" loading="lazy" width="1672" height="941">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 06</span><span class="go-title">Women's Health Camp</span></div>
             </div>
             <div class="gallery-item gi-7 card-3d mag-tgt">
-                <img src="../static/ehub.jpg" alt="Educational Hubs">
+                <img src="../static/ehub.jpg" alt="Educational Hubs" loading="lazy" width="1672" height="941">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 07</span><span class="go-title">Educational Hubs</span></div>
             </div>
             <div class="gallery-item gi-8 card-3d mag-tgt">
-                <img src="../static/deep.jpg" alt="Deep Tech Lab">
+                <img src="../static/deep.jpg" alt="Deep Tech Lab" loading="lazy" width="1672" height="941">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 08</span><span class="go-title">Deep Tech Lab</span></div>
             </div>
             <div class="gallery-item gi-9 card-3d mag-tgt">
-                <img src="../static/community.jpg" alt="Community Dialogue">
+                <img src="../static/community.jpg" alt="Community Dialogue" loading="lazy" width="1983" height="793">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 09</span><span class="go-title">Community Dialogue</span></div>
             </div>
             <div class="gallery-item gi-10 card-3d mag-tgt">
-                <img src="../static/deploy.jpg" alt="System Deployment">
+                <img src="../static/deploy.jpg" alt="System Deployment" loading="lazy" width="1983" height="793">
                 <div class="gallery-overlay"><span class="go-tag">Data Mod 10</span><span class="go-title">System Deployment</span></div>
             </div>
         </div>
@@ -2077,13 +2162,13 @@
             <div class="recog-block">
                 <div class="recog-frame-wrapper">
                     
-                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel">
+                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel" loading="lazy" width="1080" height="1080">
                     
                     <div class="recog-item card-3d mag-tgt" style="cursor: pointer;" onclick="openCertModal(this.querySelector('img').src)">
-                        <img src="../static/startupodisha.jpg" alt="Startup Odisha" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;">
+                        <img src="../static/startupodisha.jpg" alt="Startup Odisha" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;" loading="lazy" width="1280" height="905">
                     </div>
                     
-                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel">
+                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel" loading="lazy" width="1080" height="1080">
                 </div>
                 <div class="recog-text-container">
                     <span>Startup Odisha</span>
@@ -2094,13 +2179,13 @@
             <div class="recog-block">
                 <div class="recog-frame-wrapper">
 
-                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel">
+                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel" loading="lazy" width="1080" height="1080">
                     
                     <div class="recog-item card-3d mag-tgt" style="cursor: pointer;" onclick="openCertModal(this.querySelector('img').src)">
-                        <img src="../static/startupindia.jpg" alt="Startup India" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;">
+                        <img src="../static/startupindia.jpg" alt="Startup India" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;" loading="lazy" width="1280" height="904">
                     </div>
                     
-                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel">
+                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel" loading="lazy" width="1080" height="1080">
                 </div>
                 <div class="recog-text-container">
                     <span>Startup India</span>
@@ -2112,13 +2197,13 @@
             <div class="recog-block">
                 <div class="recog-frame-wrapper">
                     
-                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel">
+                    <img src="../static/left.png" class="laurel-side" alt="Left Laurel" loading="lazy" width="1080" height="1080">
                     
                     <div class="recog-item card-3d mag-tgt" style="cursor: pointer;" onclick="openCertModal(this.querySelector('img').src)">
-                        <img src="../static/msme.jpg" alt="MSME Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;">
+                        <img src="../static/msme.jpg" alt="MSME Logo" style="width: 100%; height: 100%; object-fit: contain; border-radius: 18px;" loading="lazy" width="1230" height="692">
                     </div>
                     
-                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel">
+                    <img src="../static/right.png" class="laurel-side" alt="Right Laurel" loading="lazy" width="1080" height="1080">
                 </div>
                 <div class="recog-text-container">
                     <span>MSME Certificate</span>
@@ -2228,27 +2313,27 @@
         
         <div class="stories-marquee-container fade-up">
             <div class="marquee-track left-to-right">
-                <div class="story-block card-3d mag-tgt" data-story="1"><img src="../static/story01.png" alt="Icon 1"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="2"><img src="../static/story02.png" alt="Icon 2"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="3"><img src="../static/story03.png" alt="Icon 3"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="4"><img src="../static/story04.png" alt="Icon 4"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="5"><img src="../static/story05.png" alt="Icon 5"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="6"><img src="../static/story06.png" alt="Icon 6"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="7"><img src="../static/story07.png" alt="Icon 7"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="8"><img src="../static/story08.png" alt="Icon 8"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="9"><img src="../static/story09.png" alt="Icon 9"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="10"><img src="../static/story10.png" alt="Icon 10"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="1"><img src="../static/story01.png" alt="Icon 1" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="2"><img src="../static/story02.png" alt="Icon 2" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="3"><img src="../static/story03.png" alt="Icon 3" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="4"><img src="../static/story04.png" alt="Icon 4" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="5"><img src="../static/story05.png" alt="Icon 5" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="6"><img src="../static/story06.png" alt="Icon 6" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="7"><img src="../static/story07.png" alt="Icon 7" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="8"><img src="../static/story08.png" alt="Icon 8" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="9"><img src="../static/story09.png" alt="Icon 9" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="10"><img src="../static/story10.png" alt="Icon 10" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
                 
-                <div class="story-block card-3d mag-tgt" data-story="1"><img src="../static/story01.png" alt="Icon 1"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="2"><img src="../static/story02.png" alt="Icon 2"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="3"><img src="../static/story03.png" alt="Icon 3"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="4"><img src="../static/story04.png" alt="Icon 4"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="5"><img src="../static/story05.png" alt="Icon 5"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="6"><img src="../static/story06.png" alt="Icon 6"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="7"><img src="../static/story07.png" alt="Icon 7"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="8"><img src="../static/story08.png" alt="Icon 8"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="9"><img src="../static/story09.png" alt="Icon 9"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
-                <div class="story-block card-3d mag-tgt" data-story="10"><img src="../static/story10.png" alt="Icon 10"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="1"><img src="../static/story01.png" alt="Icon 1" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="2"><img src="../static/story02.png" alt="Icon 2" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="3"><img src="../static/story03.png" alt="Icon 3" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="4"><img src="../static/story04.png" alt="Icon 4" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="5"><img src="../static/story05.png" alt="Icon 5" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="6"><img src="../static/story06.png" alt="Icon 6" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="7"><img src="../static/story07.png" alt="Icon 7" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="8"><img src="../static/story08.png" alt="Icon 8" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="9"><img src="../static/story09.png" alt="Icon 9" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
+                <div class="story-block card-3d mag-tgt" data-story="10"><img src="../static/story10.png" alt="Icon 10" loading="lazy" width="1254" height="1254"><div class="sb-overlay"><span class="sb-read">Read More <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span></div></div>
             </div>
         </div>
     </section>
@@ -2321,7 +2406,7 @@
                 <div class="fp-tech-ring"></div>
                 <div class="fp-tech-ring-2"></div>
                 <div class="fp-tech-crosshair"></div>
-                <img src="../static/founder.png" alt="Vishma Pasayat" class="fp-founder-img">
+                <img src="../static/founder.png" alt="Vishma Pasayat" class="fp-founder-img" loading="lazy" width="1280" height="1280">
                 <div class="fp-micro-badge"><span></span> SYS.ARCHITECT // ACTIVE</div>
             </div>
             
@@ -2344,7 +2429,7 @@
             <!-- STPI Card -->
             <a href="https://stpi.in/en" target="_blank" rel="noopener noreferrer" class="partner-card card-3d mag-tgt">
                 <div class="pc-logo-wrapper">
-                    <img src="../static/stpi.jpg" alt="STPI Logo">
+                    <img src="../static/stpi.jpg" alt="STPI Logo" loading="lazy" width="1280" height="711">
                 </div>
                 <div class="pc-content">
                     <span class="pc-tag">Government of India</span>
@@ -2397,7 +2482,7 @@
             <!-- eMtek Card -->
             <a href="https://stpi.in/en/centre-of-entrepreneurship/emtek" target="_blank" rel="noopener noreferrer" class="partner-card card-3d mag-tgt">
                 <div class="pc-logo-wrapper">
-                    <img src="../static/emtek.jpg" alt="eMtek Logo">
+                    <img src="../static/emtek.jpg" alt="eMtek Logo" loading="lazy" width="1280" height="463">
                 </div>
                 <div class="pc-content">
                     <span class="pc-tag">Centre of Entrepreneurship</span>
@@ -2504,14 +2589,15 @@
         </div>
     </section>
 
-    <!-- FOOTER ZENITH -->
+    <!-- FOOTER ZENITH -->    </main>
+
     <footer>
         <div class="fz-scanline"></div>
         
         <div class="footer-advanced-grid fade-up">
             <div class="footer-brand-col">
                 <div class="footer-image-wrapper">
-                    <img src="../static/footer.png" alt="Masika Care Ecosystem">
+                    <img src="../static/footer.png" alt="Masika Care Ecosystem" loading="lazy" width="1280" height="1134">
                 </div>
                 <div class="logo footer-logo">MASIKA</div>
             </div>
@@ -2652,7 +2738,7 @@
     <!-- Certificate Modal -->
     <div id="certModal" class="cert-modal">
         <span class="cert-modal-close" onclick="closeCertModal()">&times;</span>
-        <img class="cert-modal-content" id="certModalImg" src="">
+        <img class="cert-modal-content" id="certModalImg" src="" loading="lazy">
     </div>
 
     <!-- JAVASCRIPT FOR ADVANCED INTERACTIONS -->

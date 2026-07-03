@@ -1,0 +1,15 @@
+User-agent: *
+Allow: /
+Allow: /static/
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.jpg$
+Allow: /*.png$
+Allow: /*.webp$
+Allow: /*.avif$
+
+Disallow: /admin/
+Disallow: /private/
+Disallow: /api/
+
+Sitemap: https://www.masikacare.com/sitemap.xml

@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Core Ecosystem | Team Book</title>
+    
+    <!-- Premium Font Engines -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Entry Micro-Interactions -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        /* --- GLOBAL SYSTEM MATRIX --- */
+        :root {
+            /* Strictly Requested Colors */
+            --c-bg: #f1f4fa;      
+            --c-dark: #07090f;    
+            --c-red: #fa1e34;     
+
+            /* Typography */
+            --font-cine: 'Playfair Display', serif;
+            --font-ui: 'Outfit', sans-serif;
+            --font-data: 'JetBrains Mono', monospace;
+            
+            /* Ambience */
+            --accent-glow: rgba(250, 30, 52, 0.25);
+            --ease-cinematic: cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        /* Lock Body to prevent native vertical scrolling */
+        html, body {
+            margin: 0; padding: 0; box-sizing: border-box;
+            background-color: var(--c-bg);
+            color: var(--c-dark);
+            font-family: var(--font-ui);
+            overflow: hidden; /* Only the book container scrolls */
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::selection { background: var(--c-red); color: var(--c-bg); }
+        
+        /* Hide scrollbars for absolute clean aesthetic */
+        ::-webkit-scrollbar { display: none; }
+
+        /* ADVANCED CINEMATIC TYPOGRAPHY */
+        h1, h2, h3, .cinematic-text {
+            font-family: var(--font-cine);
+            font-weight: 500;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+        .premium-heading { display: flex; flex-direction: column; line-height: 1.05; font-size: clamp(2.5rem, 4vw, 4rem); position: relative; z-index: 5; }
+        .premium-heading .cine-accent {
+            font-style: italic; color: var(--c-red); font-weight: 400;
+            padding-left: 8%; position: relative;
+        }
+        .premium-heading .cine-accent::before {
+            content: ''; position: absolute; left: -15px; top: 50%;
+            width: 30px; height: 1px; background: var(--c-red); transform: translateY(-50%);
+        }
+
+        .data-mono {
+            font-family: var(--font-data); font-size: 0.65rem; text-transform: uppercase;
+            letter-spacing: 0.2em; font-weight: 700; color: rgba(7, 9, 15, 0.5);
+        }
+
+        /* --- HORIZONTAL BOOK SWIPE ARCHITECTURE --- */
+        .stacking-container {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow-x: auto;
+            overflow-y: hidden;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;  
+            scrollbar-width: none;  
+        }
+
+        .slide {
+            flex: 0 0 100vw;
+            width: 100vw;
+            height: 100%;
+            scroll-snap-align: start;
+            position: relative;
+            background-color: var(--c-bg);
+            /* Soft shadow simulating page overlap */
+            box-shadow: -15px 0 30px rgba(0,0,0,0.03);
+            border-left: 1px solid rgba(255,255,255,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            /* Book Paper Textures */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, transparent 80%),
+                linear-gradient(to right, rgba(7,9,15,0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(7,9,15,0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 60px 60px, 60px 60px;
+        }
+
+        /* Simulated Book Spine on the left of each page */
+        .slide::before {
+            content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 40px;
+            background: linear-gradient(to right, rgba(7,9,15,0.04), transparent);
+            z-index: 0; pointer-events: none;
+        }
+
+        .slide-content-wrapper {
+            position: relative;
+            width: 100%; max-width: 1600px;
+            height: 100%;
+            padding: 2vh 5% 6vh;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        /* Top Header Area for Categories */
+        .slide-header { margin-bottom: 2vh; display: flex; flex-direction: column; gap: 10px; }
+        .minimal-num { display: flex; align-items: center; gap: 15px; }
+        .minimal-num .num { font-family: var(--font-data); font-size: 0.85rem; font-weight: 700; color: var(--c-red); letter-spacing: 0.1em; }
+        .minimal-num .num-line { width: 40px; height: 1px; background: rgba(7,9,15,0.15); }
+        
+        /* Category Icon Animations */
+        .cat-icon { position: absolute; right: 5%; top: 50px; width: 80px; height: 80px; opacity: 0.9; z-index: 1; }
+        .anim-spin-slow { transform-origin: center; animation: spin 15s linear infinite; }
+        .anim-spin-fast { transform-origin: center; animation: spin 8s linear infinite; }
+        .anim-spin-rev { transform-origin: center; animation: spin 15s linear infinite reverse; }
+        .anim-radar { transform-origin: center; animation: radarPulse 3s cubic-bezier(0.16, 1, 0.3, 1) infinite; }
+        .anim-pulse-core { transform-origin: center; animation: subtlePulse 3s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes subtlePulse { 0% { opacity: 0.5; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); filter: drop-shadow(0 0 10px var(--accent-glow)); } }
+        @keyframes radarPulse { 0% { transform: scale(0.5); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+
+        /* Book Pagination Element */
+        .book-pagination {
+            position: absolute; bottom: 30px; right: 5%;
+            font-family: var(--font-data); font-size: 0.65rem;
+            letter-spacing: 0.2em; font-weight: 700; color: rgba(7,9,15,0.4);
+        }
+
+        /* --- IN-AIR LAYOUT & DYNAMIC SIZING (REMOVED CONTAINERS) --- */
+        .team-grid { display: grid; gap: 30px; width: 100%; }
+
+        .member-card {
+            display: flex; align-items: center; gap: 30px;
+            background: transparent; /* Removed Background */
+            padding: 0; /* Removed Padding */
+            border: none; /* Removed Border */
+            box-shadow: none; /* Removed Shadow */
+            transition: all 0.5s var(--ease-cinematic);
+            position: relative; cursor: default;
+        }
+        .member-card:hover {
+            transform: translateY(-5px); /* Keep slight floating lift */
+        }
+
+        .mc-visual {
+            aspect-ratio: 3 / 4; border-radius: 16px;
+            overflow: hidden; position: relative; background: rgba(7, 9, 15, 0.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08); /* Shadow transferred directly to image for pop */
+        }
+        .mc-visual img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(110%); transition: all 0.8s var(--ease-cinematic); }
+        .member-card:hover .mc-visual img { filter: grayscale(0%); transform: scale(1.05); }
+
+        .mc-visual::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(250,30,52,0.6), transparent 60%);
+            opacity: 0; transition: 0.5s ease;
+        }
+        .member-card:hover .mc-visual::after { opacity: 1; }
+
+        .mc-content { flex: 1; display: flex; flex-direction: column; justify-content: center; padding-right: 15px; height: 100%; }
+        .mc-name { font-family: var(--font-cine); color: var(--c-dark); line-height: 1.1; }
+        .mc-role {
+            font-family: var(--font-data); color: var(--c-red); text-transform: uppercase;
+            letter-spacing: 0.15em; font-weight: 700; display: flex; align-items: center; gap: 8px;
+        }
+        .mc-role::before { content:''; width: 20px; height: 1px; background: var(--c-red); }
+        .mc-desc { font-family: var(--font-ui); color: rgba(7,9,15,0.6); font-weight: 400; }
+
+        /* --- PREMIUM CONNECT BUTTON --- */
+        .mc-connect-btn {
+            display: inline-flex; align-items: center; gap: 8px; padding: 10px 22px;
+            background: transparent; border: 1px solid rgba(250, 30, 52, 0.3); border-radius: 100px;
+            color: var(--c-dark); font-family: var(--font-data); font-size: 0.7rem; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase; text-decoration: none; width: max-content;
+            transition: all 0.4s var(--ease-cinematic); position: relative; overflow: hidden;
+            z-index: 1; margin-top: auto; 
+        }
+        .mc-connect-btn::before {
+            content: ''; position: absolute; inset: 0; background: var(--c-red);
+            transform: scaleX(0); transform-origin: right; transition: transform 0.4s var(--ease-cinematic); z-index: -1;
+        }
+        .mc-connect-btn:hover { color: var(--c-bg); border-color: var(--c-red); box-shadow: 0 8px 20px rgba(250, 30, 52, 0.2); transform: translateY(-2px); }
+        .mc-connect-btn:hover::before { transform: scaleX(1); transform-origin: left; }
+        .mc-connect-btn svg { width: 14px; height: 14px; transition: transform 0.4s ease; stroke-width: 2.5; }
+        .mc-connect-btn:hover svg { transform: translateX(4px) scale(1.1); }
+
+        /* --- DYNAMIC SIZING (LARGER IMAGES & NO COLLISIONS) --- */
+        
+        .grid-1 { max-width: 900px; margin: 0 auto; grid-template-columns: 1fr; gap: 30px; }
+        .grid-1 .member-card { padding: 0; gap: 50px; }
+        .grid-1 .mc-visual { flex: 0 0 clamp(240px, 35vh, 340px); } /* Maximum Size for Founder */
+        .grid-1 .mc-name { font-size: clamp(2.5rem, 3.5vw, 3.5rem); margin-bottom: 8px; }
+        .grid-1 .mc-role { font-size: 0.8rem; margin-bottom: 20px; }
+        .grid-1 .mc-desc { font-size: 1.15rem; line-height: 1.7; margin-bottom: 25px; }
+
+        .grid-2 { grid-template-columns: repeat(2, 1fr); max-width: 1200px; margin: 0 auto; gap: 40px; }
+        .grid-2 .member-card { padding: 0; gap: 30px; }
+        .grid-2 .mc-visual { flex: 0 0 clamp(160px, 28vh, 220px); } /* Significantly Larger */
+        .grid-2 .mc-name { font-size: clamp(1.8rem, 2.5vw, 2.2rem); margin-bottom: 5px; }
+        .grid-2 .mc-role { font-size: 0.7rem; margin-bottom: 15px; }
+        .grid-2 .mc-desc { font-size: 1rem; line-height: 1.6; margin-bottom: 20px; display: -webkit-box; -webkit-line-clamp: 4; line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+
+        .grid-4 { grid-template-columns: repeat(2, 1fr); max-width: 1300px; margin: 0 auto; gap: clamp(25px, 4vh, 50px); }
+        .grid-4 .member-card { padding: 0; gap: 25px; }
+        .grid-4 .mc-visual { flex: 0 0 clamp(130px, 22vh, 180px); } /* Much Larger but tightly packed vertically */
+        .grid-4 .mc-name { font-size: 1.5rem; margin-bottom: 3px; }
+        .grid-4 .mc-role { font-size: 0.6rem; margin-bottom: 10px; }
+        .grid-4 .mc-desc { font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        .grid-4 .mc-connect-btn { padding: 8px 18px; font-size: 0.65rem; }
+
+
+        /* --- HUD & MINIMALIST AESTHETICS --- */
+        .hud-bg-text { position: absolute; font-family: var(--font-data); font-size: 14vw; font-weight: 800; color: rgba(7,9,15,0.015); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; white-space: nowrap; letter-spacing: -0.05em; z-index: 0; -webkit-user-select: none; user-select: none;}
+        .hud-crosshair { position: absolute; width: 30px; height: 30px; z-index: 1; pointer-events: none; opacity: 0.2; }
+        .hud-crosshair::before { content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 1px; background: var(--c-dark); transform: translateY(-50%); }
+        .hud-crosshair::after { content: ''; position: absolute; left: 50%; top: 0; height: 100%; width: 1px; background: var(--c-dark); transform: translateX(-50%); }
+        .hud-top-right { top: 8%; right: 5%; }
+        .hud-bot-left { bottom: 8%; left: 5%; }
+
+        /* Splash Page Elements dynamically adjusted for extreme visibility to fix cutoff */
+        .huge-splash { font-size: clamp(3.5rem, 7vw, 8rem); text-align: center; line-height: 0.95; margin: 1vh 0 2vh 0; }
+        .splash-p { max-width: 600px; margin: 0 auto 3vh; text-align: center; color: rgba(7,9,15,0.6); font-size: clamp(0.9rem, 1.5vh, 1.1rem); line-height: 1.6; }
+        
+        .swipe-indicator { display: inline-flex; align-items: center; gap: 15px; margin-top: 0; color: var(--c-red); font-family: var(--font-data); font-size: 0.75rem; letter-spacing: 0.3em; font-weight: 700; text-transform: uppercase; padding: 14px 30px; border-radius: 100px; border: 1px solid rgba(250, 30, 52, 0.2); background: linear-gradient(90deg, transparent, rgba(250,30,52,0.05), transparent); position: relative; overflow: hidden; box-shadow: 0 0 25px rgba(250, 30, 52, 0.05); }
+        .swipe-indicator::before { content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(90deg, transparent, rgba(250, 30, 52, 0.2), transparent); animation: swipeLight 2.5s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        .swipe-indicator svg { width: 20px; height: 20px; stroke: currentColor; fill: none; animation: swipeThrust 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite; }
+        @keyframes swipeLight { 0% { left: -100%; } 100% { left: 200%; } }
+        @keyframes swipeThrust { 0% { transform: translateX(-8px); opacity: 0; } 20% { transform: translateX(0); opacity: 1; } 80% { transform: translateX(12px); opacity: 1; } 100% { transform: translateX(20px); opacity: 0; } }
+
+        .btn-primary { background: transparent; color: var(--c-dark); border: 1px solid rgba(7, 9, 15, 0.1); padding: 14px 32px; border-radius: 100px; font-family: var(--font-cine); font-style: italic; font-size: 1.15rem; position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.5s ease; box-shadow: 0 8px 20px rgba(250, 30, 52, 0.1); text-decoration: none;}
+        .btn-primary::after { content: ''; position: absolute; inset: 0; background: var(--c-red); z-index: -2; transition: 0.5s ease; }
+        .btn-primary:hover { color: var(--c-bg); border-color: transparent; transform: translateY(-3px); box-shadow: 0 12px 30px rgba(250, 30, 52, 0.35); }
+        .btn-primary svg { width: 14px; height: 14px; stroke: currentColor; transition: transform 0.5s; }
+        .btn-primary:hover svg { transform: translateX(5px); }
+
+        .gsap-reveal { opacity: 0; transform: translateX(40px); }
+
+        /* --- UTILITY CLASSES FOR STRICT COMPLIANCE --- */
+        .flex-center-col { text-align: center; align-items: center; justify-content: center; }
+        
+        /* Adjusted Icon size to forcefully fit alongside the button within 100vh height */
+        .hero-hud-icon { position: relative; width: clamp(90px, 14vh, 160px); height: clamp(90px, 14vh, 160px); margin-bottom: 2vh; flex-shrink: 0; }
+        
+        .hud-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
+        .hud-layer-reverse { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 12s linear infinite reverse; }
+        .hud-pulse-fast { animation: subtlePulse 1s infinite alternate; }
+        .hud-scan-line { animation: spin 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; transform-origin: center; }
+        
+        /* Tightened Subtitle Margin */
+        .min-num-center { margin: 0 auto 2vh; justify-content: center; }
+        
+        .text-c-dark { color: var(--c-dark); }
+        .text-c-red { color: var(--c-red); }
+        .slide-wrapper-outro { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; }
+        .outro-heading { color: var(--c-dark); margin-bottom: 30px; align-items: center; }
+        .text-clamp-huge { font-size: clamp(3.5rem, 6vw, 6rem); }
+        .pl-0 { padding-left: 0; }
+        .outro-subtext { color: rgba(7, 9, 15, 0.5); margin-bottom: 60px; }
+
+        /* Media Queries for optimal split layout presentation */
+        @media (max-width: 1200px) {
+            .grid-4 { grid-template-columns: 1fr; gap: 40px; } 
+            .slide-content-wrapper { overflow-y: auto; align-items: center; justify-content: flex-start; padding-top: 80px; }
+            .team-grid { max-width: 800px; }
+        }
+        
+        /* SMARTPHONE RATIO & SWIPE OPTIMIZATION */
+        @media (max-width: 768px) {
+            .cat-icon { width: 50px; height: 50px; top: 25px; right: 5%; }
+            
+            .team-grid {
+                display: flex !important;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 20px !important;
+                padding-bottom: 20px;
+                -ms-overflow-style: none; scrollbar-width: none;
+            }
+            .team-grid::-webkit-scrollbar { display: none; }
+            
+            .grid-1, .grid-2, .grid-4 { display: flex; max-width: 100%; margin: 0; }
+            
+            .member-card {
+                flex: 0 0 88vw !important;
+                scroll-snap-align: center;
+                max-width: none !important;
+                padding: 0 !important; 
+                gap: 20px !important; 
+                border-radius: 0;
+            }
+            .mc-visual { flex: 0 0 140px !important; border-radius: 12px; }
+            .mc-name { font-size: 1.6rem !important; margin-bottom: 4px !important;}
+            .mc-role { font-size: 0.65rem !important; letter-spacing: 0.1em !important; margin-bottom: 10px !important; }
+            .mc-desc { font-size: 0.9rem !important; line-height: 1.5 !important; -webkit-line-clamp: 4 !important; line-clamp: 4 !important; }
+            .mc-connect-btn { padding: 8px 16px !important; font-size: 0.65rem !important; margin-top: 10px !important; }
+            
+            .slide-header { margin-bottom: 25px; text-align: left; }
+            .slide-content-wrapper { padding: 60px 5%; justify-content: flex-start; }
+            .huge-splash { font-size: 3.2rem; }
+            .book-pagination { bottom: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stacking-container">
+
+        <!-- ============================================== -->
+        <!-- SLIDE 1 : COVER PAGE                           -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-1">
+            <div class="hud-bg-text">MATRIX.01</div>
+            <div class="hud-crosshair hud-top-right"></div>
+            <div class="book-pagination">PG. 01 / 08</div>
+
+            <div class="slide-content-wrapper flex-center-col">
+                
+                <div class="hero-hud-icon gsap-reveal">
+                    <!-- Outer rotating glowing aura -->
+                    <svg viewBox="0 0 200 200" class="hud-layer anim-spin-slow" style="filter: drop-shadow(0 0 8px rgba(250, 30, 52, 0.4));">
+                        <circle cx="100" cy="100" r="94" fill="none" stroke="rgba(7, 9, 15, 0.15)" stroke-width="1"/>
+                        <circle cx="100" cy="100" r="94" fill="none" stroke="var(--c-red)" stroke-width="2" stroke-dasharray="140 260" stroke-linecap="round"/>
+                        <circle cx="100" cy="100" r="86" fill="none" stroke="rgba(250, 30, 52, 0.2)" stroke-width="1.5" stroke-dasharray="2 6"/>
+                    </svg>
+            
+                    <!-- Complex geometric matrix -->
+                    <svg viewBox="0 0 200 200" class="hud-layer-reverse">
+                        <!-- Intersecting Polygons -->
+                        <polygon points="100,10 177.9,55 177.9,145 100,190 22.1,145 22.1,55" fill="none" stroke="rgba(7, 9, 15, 0.08)" stroke-width="1.5"/>
+                        <polygon points="100,25 164.9,62.5 164.9,137.5 100,175 35.1,137.5 35.1,62.5" fill="none" stroke="var(--c-dark)" stroke-width="1" stroke-dasharray="4 4"/>
+                        <!-- Data Trackers -->
+                        <circle cx="100" cy="10" r="3" fill="var(--c-red)"/>
+                        <circle cx="100" cy="190" r="3" fill="var(--c-red)"/>
+                        <circle cx="22.1" cy="55" r="3" fill="var(--c-dark)"/>
+                        <circle cx="177.9" cy="145" r="3" fill="var(--c-dark)"/>
+                    </svg>
+            
+                    <!-- Central Core & Radar Sweep -->
+                    <svg viewBox="0 0 200 200" class="hud-layer">
+                        <circle cx="100" cy="100" r="45" fill="none" stroke="rgba(250, 30, 52, 0.1)" stroke-width="4" stroke-dasharray="10 5"/>
+                        <!-- Pulsing Core -->
+                        <circle cx="100" cy="100" r="28" fill="var(--c-dark)" class="anim-pulse-core"/>
+                        <circle cx="100" cy="100" r="12" fill="none" stroke="var(--c-red)" stroke-width="2" class="hud-pulse-fast"/>
+                        <circle cx="100" cy="100" r="4" fill="var(--c-bg)"/>
+                        
+                        <!-- Precision Reticles -->
+                        <path d="M 100 35 L 100 50 M 100 150 L 100 165 M 35 100 L 50 100 M 150 100 L 165 100" stroke="var(--c-red)" stroke-width="2" stroke-linecap="round"/>
+                        
+                        <!-- Scanning Radar Sector -->
+                        <g class="hud-scan-line">
+                            <line x1="100" y1="100" x2="100" y2="20" stroke="var(--c-red)" stroke-width="1.5"/>
+                            <path d="M 100 100 L 100 20 A 80 80 0 0 1 156.5 43.4 Z" fill="rgba(250, 30, 52, 0.08)"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <div class="minimal-num gsap-reveal min-num-center">
+                    <span class="num">0.1%</span><span class="num-line"></span><span class="num-label">SYSTEM ECOSYSTEM</span>
+                </div>
+                
+                <h1 class="huge-splash cinematic-text gsap-reveal">
+                    <span class="text-c-dark">The</span> <span class="text-c-red">Architect</span><br><span class="text-c-dark">Collective</span>
+                </h1>
+                
+                <p class="splash-p gsap-reveal">Meet the elite nodes driving our deep tech proprietary models, crafting cinematic designs, scaling ecosystems, and relentlessly eliminating traditional boundaries.</p>
+
+                <div class="swipe-indicator gsap-reveal" style="cursor: pointer;" onclick="document.querySelector('.stacking-container').scrollBy({left: window.innerWidth, behavior: 'smooth'})">
+                    Swipe Page 
+                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 2 : FOUNDER                              -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-2">
+            <div class="hud-bg-text">ARCHITECT.</div>
+            <div class="hud-crosshair hud-bot-left"></div>
+            <div class="book-pagination">PG. 02 / 08</div>
+            
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(250, 30, 52, 0.2)" stroke-width="1.5" stroke-dasharray="4 8" class="anim-spin-slow"/>
+                <polygon points="50,15 85,50 50,85 15,50" fill="none" stroke="var(--c-dark)" stroke-width="1.5" class="anim-spin-rev"/>
+                <circle cx="50" cy="50" r="20" fill="none" stroke="rgba(7, 9, 15, 0.1)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="6" fill="var(--c-red)" class="anim-pulse-core"/>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">01</span><span class="num-line"></span><span class="num-label">COMMAND CORE</span>
+                    </div>
+                    <h2 class="premium-heading"><span>The</span><span class="cine-accent">Founder</span></h2>
+                </div>
+
+                <div class="team-grid grid-1">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual">
+                            <img src="../static/founder.jpg" alt="Founder">
+                        </div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Vishma Pasayat</h3>
+                            <span class="mc-role">Lead System Architect</span>
+                            <p class="mc-desc">Behind every model he builds lies a human problem waiting to be solved.
+Witnessing the impact of limited menstrual health awareness, he set out to bridge the gap through AI, language technologies, and scalable healthcare intelligence.
+Today, he's building systems designed to democratize menstrual health support at population scale.
+</p>
+                            <a href="founder.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 3 : MARKETING                            -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-3">
+            <div class="hud-bg-text">NETWORK.</div>
+            <div class="hud-crosshair hud-top-right"></div>
+            <div class="book-pagination">PG. 03 / 08</div>
+
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(7, 9, 15, 0.1)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="25" fill="none" stroke="var(--c-red)" stroke-width="1" class="anim-radar"/>
+                <g class="anim-spin-slow">
+                    <circle cx="15" cy="50" r="4" fill="var(--c-red)"/>
+                    <circle cx="85" cy="50" r="4" fill="var(--c-red)"/>
+                    <circle cx="50" cy="15" r="4" fill="var(--c-dark)"/>
+                    <circle cx="50" cy="85" r="4" fill="var(--c-dark)"/>
+                    <path d="M15 50 L85 50 M50 15 L50 85" stroke="rgba(7, 9, 15, 0.15)" stroke-width="1" stroke-dasharray="2 4"/>
+                </g>
+                <circle cx="50" cy="50" r="8" fill="var(--c-dark)" class="anim-pulse-core"/>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">02</span><span class="num-line"></span><span class="num-label">SCALE PROPULSION</span>
+                    </div>
+                    <h2 class="premium-heading"><span>Growth &</span><span class="cine-accent">Marketing</span></h2>
+                </div>
+
+                <div class="team-grid grid-2">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual">
+                            <img src="../static/mrk01.jpg" alt="Marketing">
+                        </div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Vennela</h3>
+                            <span class="mc-role">VP Marketing Systems</span>
+                            <p class="mc-desc">Having worked with industry leaders like Adani Group, she learned that great brands are built through trust and consistency.
+Her strength lies in transforming ideas into movements that people connect with.
+Every campaign she leads is backed by purpose, precision, and persistence.
+</p>
+                            <a href="mrk01.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual">
+                            <img src="../static/mrk02.jpg" alt="Marketing">
+                        </div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Shailasa Sadangi</h3>
+                            <span class="mc-role">Growth Hacker</span>
+                            <p class="mc-desc">While technology powers innovation, she ensures its message reaches the people who matter.
+Through podcasting, narrative design, and strategic communication, she bridges the gap between complex ideas and human understanding.
+Because the most powerful stories are the ones that create lasting impact.
+</p>
+                            <a href="mrk02.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 4 : VIDEO EDITOR                         -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-4">
+            <div class="hud-bg-text">VISUALS.</div>
+            <div class="hud-crosshair hud-bot-left"></div>
+            <div class="book-pagination">PG. 04 / 08</div>
+
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <g class="anim-spin-slow">
+                    <path d="M 20 30 L 20 20 L 30 20 M 80 30 L 80 20 L 70 20 M 20 70 L 20 80 L 30 80 M 80 70 L 80 80 L 70 80" fill="none" stroke="var(--c-dark)" stroke-width="2"/>
+                </g>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="rgba(250, 30, 52, 0.2)" stroke-width="1.5" stroke-dasharray="10 10" class="anim-spin-rev"/>
+                <polygon points="45,35 65,50 45,65" fill="var(--c-red)" class="anim-pulse-core"/>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">03</span><span class="num-line"></span><span class="num-label">CINEMATIC CONTROL</span>
+                    </div>
+                    <h2 class="premium-heading"><span>Video</span><span class="cine-accent">Architects</span></h2>
+                </div>
+
+                <div class="team-grid grid-2">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual">
+                            <img src="../static/vded01.jpg" alt="Video Editor">
+                        </div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Hrushikesh Das</h3>
+                            <span class="mc-role">Lead Motion Director</span>
+                            <p class="mc-desc">At the intersection of motion, design, and storytelling, he brings narratives to life frame by frame.
+With expertise in short-form content, cinematic editing, motion graphics, and visual composition, he crafts experiences that resonate beyond the screen.
+Because impactful stories deserve equally impactful visuals.
+</p>
+                            <a href="vded01.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual">
+                            <img src="../static/vded02.jpg" alt="Video Editor">
+                        </div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Zaid Haque</h3>
+                            <span class="mc-role">Post-Production Expert</span>
+                            <p class="mc-desc">Behind every engaging long-form video lies a rhythm most viewers never notice.
+With expertise in storytelling, timeline structuring, audio balancing, and cinematic pacing, he shapes content that feels effortless to watch.
+His craft turns conversations into narratives and footage into memorable experiences.
+</p>
+                            <a href="vded02.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 5 : CONTENT CREATOR                      -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-5">
+            <div class="hud-bg-text">NARRATIVE.</div>
+            <div class="hud-crosshair hud-top-right"></div>
+            <div class="book-pagination">PG. 05 / 08</div>
+
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <polygon points="50,15 80,75 20,75" fill="none" stroke="var(--c-dark)" stroke-width="1.5" class="anim-spin-slow"/>
+                <polygon points="50,85 20,25 80,25" fill="none" stroke="rgba(250, 30, 52, 0.4)" stroke-width="1.5" class="anim-spin-rev"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(7, 9, 15, 0.05)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="8" fill="var(--c-red)" class="anim-pulse-core"/>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">04</span><span class="num-line"></span><span class="num-label">PSYCHOMETRIC LOGIC</span>
+                    </div>
+                    <h2 class="premium-heading"><span>Content</span><span class="cine-accent">Creators</span></h2>
+                </div>
+
+                <div class="team-grid grid-4">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/cc01.jpg" alt="Creator 1"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Biswajit Budek</h3>
+                            <span class="mc-role">Head of Narrative</span>
+                            <p class="mc-desc">In a space where many hesitate to speak, he chose to start the conversation.
+Through his Instagram series MEN Talk Menstruation, he creates impactful short-form content that transforms awareness into understanding.
+With a clear vision and purpose-driven storytelling, he is helping normalize conversations around menstrual health, one reel at a time.
+</p>
+                            <a href="cc01.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/cc02.jpg" alt="Creator 2"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">G. Rani</h3>
+                            <span class="mc-role">Informative Content Creator</span>
+                            <p class="mc-desc">She turns evidence-based insights into stories people genuinely want to watch.
+With expertise in educational reels, long-form awareness content, and health communication, she simplifies menstrual health topics into engaging, impactful narratives.
+Because informed communities begin with accessible knowledge.
+</p>
+                            <a href="cc02.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/cc03.jpg" alt="Creator 3"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Sriya Anindita</h3>
+                            <span class="mc-role">Creative Performer</span>
+                            <p class="mc-desc">She turns every frame into a powerful story through natural performances and genuine emotion.
+Her presence brings authenticity to every visual narrative.</p>
+                            <a href="cc03.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/cc04.jpg" alt="Creator 4"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name"> Masika Creator</h3>
+                            <span class="mc-role">Health Guide</span>
+                            <p class="mc-desc">Coming Soon</p>
+                            <a href="cc04.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 6 : SOCIAL MEDIA                         -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-6">
+            <div class="hud-bg-text">SYNERGY.</div>
+            <div class="hud-crosshair hud-bot-left"></div>
+            <div class="book-pagination">PG. 06 / 08</div>
+
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(7, 9, 15, 0.1)" stroke-width="1"/>
+                <circle cx="50" cy="50" r="20" fill="none" stroke="var(--c-red)" stroke-width="1" class="anim-radar"/>
+                <g class="anim-spin-slow">
+                    <circle cx="50" cy="10" r="5" fill="var(--c-red)"/>
+                    <circle cx="85" cy="70" r="5" fill="var(--c-dark)"/>
+                    <circle cx="15" cy="70" r="5" fill="var(--c-dark)"/>
+                    <path d="M50 10 Q50 50 85 70 M85 70 Q50 50 15 70 M15 70 Q50 50 50 10" fill="none" stroke="rgba(250, 30, 52, 0.2)" stroke-width="1.5"/>
+                </g>
+                <circle cx="50" cy="50" r="6" fill="var(--c-dark)" class="anim-pulse-core"/>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">05</span><span class="num-line"></span><span class="num-label">OMNI-CHANNEL OPS</span>
+                    </div>
+                    <h2 class="premium-heading"><span>Social Media</span><span class="cine-accent">Management</span></h2>
+                </div>
+
+                <div class="team-grid grid-4">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/smm01.jpg" alt="SMM 1"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Happy Singh</h3>
+                            <span class="mc-role">Social Media Strategy & Community Lead</span>
+                            <p class="mc-desc">Driving strategy behind every campaign.
+He leads social media management, guides the team, and keeps every initiative aligned with purpose and growth.</p>
+                            <a href="smm01.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/smm02.jpg" alt="SMM 2"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Neha Bajaj</h3>
+                            <span class="mc-role">Digital Growth & Social Media Manager</span>
+                            <p class="mc-desc">She leads social media execution with a focus on consistency, engagement, and brand growth.
+Every campaign she manages is designed to build lasting connections with the community.</p>
+                            <a href="smm02.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/smm03.jpg" alt="SMM 3"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Divya Nireekshana</h3>
+                            <span class="mc-role">Communications & Social Media Lead</span>
+                            <p class="mc-desc">She drives the team's digital presence through strategic leadership and disciplined execution.
+With expertise in social media, campaign planning, and event coordination, she ensures every initiative is delivered with excellence.</p>
+                            <a href="smm03.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/smm04.jpg" alt="SMM 4"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Uma Ballav</h3>
+                            <span class="mc-role">Story Director & Narrative Lead</span>
+                            <p class="mc-desc">Every memorable story begins with a clear vision.
+Blending creative direction with expressive narration, he crafts stories that captivate, inspire, and stay with the audience.</p>
+                            <a href="smm04.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 7 : DEVELOPERS                           -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-7">
+            <div class="hud-bg-text">RUNTIME.</div>
+            <div class="hud-crosshair hud-top-right"></div>
+            <div class="book-pagination">PG. 07 / 08</div>
+
+            <svg class="cat-icon" viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(7, 9, 15, 0.1)" stroke-width="1" stroke-dasharray="2 4" class="anim-spin-slow"/>
+                <g class="anim-pulse-core">
+                    <polyline points="35,30 15,50 35,70" fill="none" stroke="var(--c-dark)" stroke-width="2"/>
+                    <polyline points="65,30 85,50 65,70" fill="none" stroke="var(--c-red)" stroke-width="2"/>
+                    <line x1="58" y1="20" x2="42" y2="80" stroke="rgba(7, 9, 15, 0.3)" stroke-width="2"/>
+                </g>
+            </svg>
+
+            <div class="slide-content-wrapper">
+                <div class="slide-header gsap-reveal">
+                    <div class="minimal-num">
+                        <span class="num">06</span><span class="num-line"></span><span class="num-label">ENGINEERING CORE</span>
+                    </div>
+                    <h2 class="premium-heading"><span>System</span><span class="cine-accent">Developers</span></h2>
+                </div>
+
+                <div class="team-grid grid-4">
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/dev01.jpg" alt="Dev 1"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Varun Kumar Goud</h3>
+                            <span class="mc-role">Lead Full-Stack Engineer</span>
+                            <p class="mc-desc">From architecture to deployment, he leads the development of robust web and mobile platforms.
+His expertise in full-stack engineering ensures every product is scalable, efficient, and built for long-term growth.</p>
+                            <a href="dev01.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/dev02.jpg" alt="Dev 2"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Panendra Jadav</h3>
+                            <span class="mc-role">AI Infrastructure & API Architect</span>
+                            <p class="mc-desc">He engineers the infrastructure that powers intelligent applications.
+With deep expertise in AI agents, API architecture, and backend systems, he builds reliable foundations for scalable, autonomous experiences.</p>
+                            <a href="dev02.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/dev03.jpg" alt="Dev 3"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">D. Thanuj Reddy</h3>
+                            <span class="mc-role">Full Stack Developer</span>
+                            <p class="mc-desc">He builds responsive, high-performance web experiences with precision and scalability.
+Focused on clean architecture and seamless user experiences, he transforms ideas into reliable digital products.</p>
+                            <a href="dev03.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="member-card gsap-reveal">
+                        <div class="mc-visual"><img src="../static/dev04.jpg" alt="Dev 4"></div>
+                        <div class="mc-content">
+                            <h3 class="mc-name">Lanke Kiran Teja</h3>
+                            <span class="mc-role">Lead Mobile App Developer</span>
+                            <p class="mc-desc">He specializes in developing robust, scalable mobile applications with precision and performance at the core.
+His engineering expertise turns innovative concepts into reliable, user-centric mobile experiences.</p>
+                            <a href="dev04.html" class="mc-connect-btn">
+                                <span>View More</span>
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5 12h14"></path><path d="M12 5l7 7-7 7"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================== -->
+        <!-- SLIDE 8 : THANK YOU                            -->
+        <!-- ============================================== -->
+        <div class="slide" id="slide-8">
+            <div class="hud-bg-text">EXECUTE.</div>
+            <div class="hero-focus-frame hf-top-left"></div>
+            <div class="hero-focus-frame hf-bot-right"></div>
+            <div class="book-pagination">PG. 08 / 08</div>
+            
+            <div class="slide-content-wrapper slide-wrapper-outro">
+                
+                <h2 class="premium-heading gsap-reveal outro-heading">
+                    <span class="text-clamp-huge">Thank</span>
+                    <span class="cine-accent pl-0 text-clamp-huge">You.</span>
+                </h2>
+                
+                <p class="data-mono gsap-reveal outro-subtext">TEAM DIRECTORY COMPILED. END OF SEQUENCE.</p>
+
+                <a href="#" class="btn-primary gsap-reveal" onclick="document.querySelector('.stacking-container').scrollTo(0,0); return false;">
+                    Re-initialize Matrix
+                    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- GSAP & SCROLL LOGIC FOR HORIZONTAL BOOK ANIMATION -->
+    <script>
+        // Init GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        const container = document.querySelector('.stacking-container');
+        const slides = document.querySelectorAll('.slide');
+
+        // Allow users on desktop to scroll horizontally using the vertical mouse wheel smoothly
+        container.addEventListener('wheel', (e) => {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                container.scrollLeft += e.deltaY * 2; // Multiplier for smoother/faster swipe speed
+            }
+        });
+
+        // Horizontal GSAP Reveals
+        slides.forEach((slide) => {
+            const revealElements = slide.querySelectorAll('.gsap-reveal');
+            
+            if(revealElements.length > 0) {
+                gsap.fromTo(revealElements, 
+                    {
+                        x: 40,
+                        opacity: 0,
+                        filter: "blur(5px)"
+                    },
+                    {
+                        x: 0,
+                        opacity: 1,
+                        filter: "blur(0px)",
+                        duration: 1.2,
+                        stagger: 0.1,
+                        ease: "power4.out",
+                        scrollTrigger: {
+                            trigger: slide,
+                            scroller: container, // Target horizontal container
+                            horizontal: true,    // Tell GSAP it's horizontal scrolling
+                            start: "left 80%",   // Trigger when slide enters 80% of view
+                            toggleActions: "play none none reverse"
+                        }
+                    }
+                );
+            }
+        });
+    </script>
+</body>
+</html>

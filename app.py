@@ -32,6 +32,21 @@ def reading_redirect():
         return redirect(url_for('reading', id=story_id), code=301)
     return redirect(url_for('reading'), code=301)
 
+@app.route('/team')
+def team():
+    return render_template('team.html')
+
+@app.route('/<path:filename>')
+def serve_html(filename):
+    if filename.endswith('.html'):
+        try:
+            from jinja2.exceptions import TemplateNotFound
+            return render_template(filename)
+        except TemplateNotFound:
+            pass
+    from flask import abort
+    abort(404)
+
 @app.route('/robots.txt')
 def static_from_root():
     return send_from_directory(app.static_folder, request.path[1:])
@@ -42,7 +57,8 @@ def sitemap():
     pages = [
         {"loc": "https://www.masikacare.com/", "priority": "1.0"},
         {"loc": "https://www.masikacare.com/join-us", "priority": "0.8"},
-        {"loc": "https://www.masikacare.com/reading", "priority": "0.8"}
+        {"loc": "https://www.masikacare.com/reading", "priority": "0.8"},
+        {"loc": "https://www.masikacare.com/team", "priority": "0.8"}
     ]
     sitemap_xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
     sitemap_xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'

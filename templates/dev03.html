@@ -228,7 +228,27 @@
         /* Background decorative elements */
         .hud-bg-text { position: absolute; font-family: var(--font-data); font-size: 16vw; font-weight: 800; color: rgba(7,9,15,0.015); bottom: -5%; right: -5%; pointer-events: none; white-space: nowrap; letter-spacing: -0.05em; z-index: 1; -webkit-user-select: none; user-select: none;}
 
+
+        @media (max-width: 768px) {
+            html, body {
+                overflow: auto;
+                height: auto;
+                min-height: 100vh;
+            }
+            .profile-matrix {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 100px 5% 40px;
+            }
+            .nav-back { top: 20px; left: 5%; }
+            .visual-sector { gap: 20px; }
+            .premium-frame { width: clamp(240px, 40vh, 300px); }
+            .creative-corner-wrap { padding: 20px 0 20px 20px; }
+            .hybrid-name { font-size: clamp(2.5rem, 8vw, 3.5rem); margin-bottom: 20px; }
+            .hud-bg-text { display: none; }
+        }
     </style>
+
 </head>
 <body>
 

@@ -308,19 +308,34 @@
                 scroll-snap-align: center;
                 max-width: none !important;
                 padding: 0 !important; 
-                gap: 20px !important; 
+                gap: 15px !important; 
                 border-radius: 0;
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                overflow-y: auto;
+                max-height: 65vh;
             }
-            .mc-visual { flex: 0 0 140px !important; border-radius: 12px; }
+            .member-card::-webkit-scrollbar { display: none; }
+            
+            .mc-visual { 
+                flex: 0 0 auto !important; 
+                width: 100% !important; 
+                height: 220px !important;
+                border-radius: 12px; 
+            }
+            .mc-content {
+                padding-bottom: 20px;
+            }
+            
             .mc-name { font-size: 1.6rem !important; margin-bottom: 4px !important;}
             .mc-role { font-size: 0.65rem !important; letter-spacing: 0.1em !important; margin-bottom: 10px !important; }
-            .mc-desc { font-size: 0.9rem !important; line-height: 1.5 !important; -webkit-line-clamp: 4 !important; line-clamp: 4 !important; }
+            .mc-desc { font-size: 0.9rem !important; line-height: 1.5 !important; display: block !important; }
             .mc-connect-btn { padding: 8px 16px !important; font-size: 0.65rem !important; margin-top: 10px !important; }
             
-            .slide-header { margin-bottom: 25px; text-align: left; }
-            .slide-content-wrapper { padding: 60px 5%; justify-content: flex-start; }
+            .slide-header { margin-bottom: 20px; text-align: left; }
+            .slide-content-wrapper { padding: 50px 5%; justify-content: flex-start; }
             .huge-splash { font-size: 3.2rem; }
-            .book-pagination { bottom: 20px; }
+            .book-pagination { bottom: 10px; z-index: 100; }
         }
     </style>
 </head>

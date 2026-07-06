@@ -1,0 +1,180 @@
+/* Partners, Vision, Mission */
+
+/* --- STRATEGIC PARTNERS --- */
+.partnersSection { position: relative; overflow: hidden; background: transparent; display: flex; flex-direction: column; align-items: center; }
+.partnersLayout {
+    display: flex; align-items: center; justify-content: center; gap: 40px; width: 100%; max-width: 1200px;
+    position: relative; z-index: 5; margin-top: 20px;
+}
+
+.partnerCard {
+    flex: 1; max-width: 400px; background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.8); border-radius: 24px; padding: 40px 30px;
+    display: flex; flex-direction: column; align-items: flex-start;
+    -webkit-backdrop-filter: blur(20px); backdrop-filter: blur(20px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03), inset 0 1px 0 #FFF;
+    text-decoration: none; position: relative; overflow: hidden;
+    transition: all 0.6s var(--ease-cinematic); cursor: pointer;
+}
+.partnerCard::before {
+    content: ''; position: absolute; inset: 0; background: radial-gradient(circle at top right, rgba(232, 26, 45, 0.08), transparent 60%);
+    opacity: 0; transition: opacity 0.6s ease; z-index: 0; pointer-events: none;
+}
+.partnerCard:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(232, 26, 45, 0.1), inset 0 1px 0 #FFF; border-color: rgba(232, 26, 45, 0.3); }
+.partnerCard:hover::before { opacity: 1; }
+
+.pcLogoWrapper {
+    width: 100%; height: 120px; background: #fff; border-radius: 16px; margin-bottom: 30px;
+    display: flex; align-items: center; justify-content: center; padding: 20px;
+    border: 1px solid rgba(10, 10, 10, 0.05); box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+    position: relative; z-index: 1; transition: all 0.5s ease;
+}
+.partnerCard:hover .pcLogoWrapper { transform: scale(1.02); box-shadow: 0 15px 30px rgba(232, 26, 45, 0.08); border-color: rgba(232, 26, 45, 0.15); }
+.pcLogoWrapper img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
+
+.pcContent { position: relative; z-index: 1; }
+.pcTag { font-family: var(--font-data); font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; color: var(--hero-accent); margin-bottom: 12px; display: block; }
+.pcTitle { font-family: var(--font-cine); font-size: 2rem; color: var(--c-dark); font-weight: 600; margin-bottom: 15px; letter-spacing: -0.02em; }
+.pcDesc { font-family: var(--font-ui); font-size: 0.95rem; color: var(--c-gray-text); line-height: 1.6; font-weight: 400; margin-bottom: 30px; }
+
+.pcHoverLink {
+    font-family: var(--font-data); font-size: 0.75rem; font-weight: 700; color: var(--c-dark);
+    letter-spacing: 0.2em; text-transform: uppercase; display: flex; align-items: center; gap: 8px;
+    margin-top: auto; position: relative; z-index: 1; transition: all 0.4s var(--ease-cinematic);
+}
+.pcHoverLink svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; transition: transform 0.4s ease; }
+.partnerCard:hover .pcHoverLink { color: var(--hero-accent); }
+.partnerCard:hover .pcHoverLink svg { transform: translateX(5px); }
+
+.partnerSynergyIcon { display: flex; align-items: center; justify-content: center; position: relative; width: 200px; height: 200px; flex-shrink: 0; }
+.spinSlow { animation: premiumSpin 30s linear infinite; }
+.spinRevFast { animation: premiumSpinRev 20s linear infinite; }
+.pulsePoly { animation: polyPulse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate; }
+.synergyCorePulse { animation: synergyCorePulse 3s infinite alternate; }
+
+@keyframes premiumSpin { 100% { transform: rotate(360deg); } }
+@keyframes premiumSpinRev { 100% { transform: rotate(-360deg); } }
+@keyframes polyPulse { 0% { transform: scale(0.95); opacity: 0.8; } 100% { transform: scale(1.05); opacity: 1; } }
+@keyframes synergyCorePulse { 0% { transform: scale(0.95); opacity: 0.6; } 100% { transform: scale(1.1); opacity: 1; } }
+@keyframes premiumDash { to { stroke-dashoffset: -100; } }
+
+@media (max-width: 900px) {
+    .partnersLayout { flex-direction: column; gap: 60px; }
+    .partnerSynergyIcon { transform: rotate(90deg); margin: -20px 0; }
+    .partnerCard { max-width: 100%; padding: 25px 20px; }
+}
+
+/* --- VISION --- */
+.vision { text-align: center; padding: 180px 5%; background: transparent; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.visionDecorLine { width: 1.5px; height: 80px; background: linear-gradient(to bottom, transparent, var(--c-red), transparent); margin-bottom: 30px; animation: premiumWaveY 3s infinite alternate ease-in-out; transform-origin: center; }
+.visionTextWrapper { max-width: 1000px; line-height: 1.4; display: inline-block; }
+.vWord { display: inline-block; margin: 0 4px; font-size: clamp(2rem, 3.5vw, 3.5rem); }
+.wDark { color: var(--c-dark); }
+.wRed { color: var(--c-red); }
+.wCine { font-family: var(--font-cine); font-style: italic; font-weight: 500; }
+.wUi { font-family: var(--font-ui); font-weight: 300; }
+
+.blurAnim { opacity: 0; filter: blur(10px); transform: translateY(10px) scale(0.95); transition: all 1.5s var(--ease-cinematic); transition-delay: var(--d, 0s); }
+.isVisible .blurAnim { opacity: 1; filter: blur(0px); transform: translateY(0) scale(1); }
+
+.visionCompassSvg { margin-top: 60px; opacity: 0.3; animation: spinNode 40s linear infinite; }
+@keyframes premiumWaveY { 0% { transform: scaleY(0.2); } 100% { transform: scaleY(1.2); } }
+
+/* --- MISSION --- */
+.missionSection { 
+    background: transparent; 
+    position: relative; 
+    overflow: hidden; 
+    padding: 150px 5%; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center;
+    z-index: 5;
+}
+
+.missionHudBg {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 100vw; height: 100%;
+    background-image: radial-gradient(circle at center, rgba(232,26,45,0.04) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+}
+
+.missionTechRing {
+    position: absolute;
+    width: clamp(320px, 85vw, 700px); height: clamp(320px, 85vw, 700px);
+    border: 1px dashed rgba(232,26,45,0.2); border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    animation: spinMission 45s linear infinite;
+    z-index: 0; pointer-events: none;
+}
+.missionTechRing::before {
+    content: ''; position: absolute; top: -3px; left: 50%; transform: translateX(-50%);
+    width: 6px; height: 6px; background: var(--c-red);
+    border-radius: 50%; box-shadow: 0 0 15px var(--c-red);
+}
+
+.missionTechCrosshair {
+    position: absolute;
+    width: 40px; height: 40px;
+    top: 20%; right: 15%;
+    opacity: 0.2; z-index: 0; pointer-events: none;
+    animation: floatPulseCore 4s infinite alternate ease-in-out;
+}
+.missionTechCrosshair::before, .missionTechCrosshair::after {
+    content: ''; position: absolute; background: var(--c-dark);
+}
+.missionTechCrosshair::before { width: 100%; height: 1px; top: 50%; left: 0; transform: translateY(-50%); }
+.missionTechCrosshair::after { height: 100%; width: 1px; left: 50%; top: 0; transform: translateX(-50%); }
+
+.missionTechRingInner {
+    position: absolute;
+    width: clamp(200px, 50vw, 450px); height: clamp(200px, 50vw, 450px);
+    border: 1px solid rgba(10,10,10,0.05); border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    animation: spinMissionRev 35s linear infinite;
+    z-index: 0; pointer-events: none;
+}
+
+@keyframes spinMission { 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+@keyframes spinMissionRev { 100% { transform: translate(-50%, -50%) rotate(-360deg); } }
+
+.missionContent {
+    position: relative; z-index: 2; max-width: 900px;
+    display: flex; flex-direction: column; align-items: center;
+}
+
+.missionStatement {
+    font-family: var(--font-ui);
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+    color: var(--c-gray-text);
+    line-height: 1.7;
+    font-weight: 400;
+    margin-top: 30px;
+}
+.mHighlight { color: var(--c-dark); font-weight: 600; }
+.mRed { color: var(--c-red); font-family: var(--font-cine); font-style: italic; font-weight: 500; font-size: 1.1em; }
+
+.missionDataNodes {
+    display: flex; gap: 30px; margin-top: 60px; justify-content: center;
+    position: relative; z-index: 2; flex-wrap: wrap;
+}
+.mDataNode {
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.5));
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    padding: 25px 35px; border-radius: 20px;
+    border: 1px solid rgba(232,26,45,0.1);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.03), inset 0 2px 2px #FFF;
+    transition: all 0.5s var(--ease-cinematic);
+}
+.mDataNode:hover { transform: translateY(-8px); border-color: rgba(232,26,45,0.3); box-shadow: 0 25px 50px rgba(232,26,45,0.08), inset 0 2px 2px #FFF; }
+.mDnVal { font-family: var(--font-cine); font-size: 2.8rem; color: var(--c-dark); line-height: 1; font-weight: 500; }
+.mDnVal span { font-family: var(--font-ui); font-size: 1.2rem; color: var(--c-red); font-weight: 700; }
+.mDnLbl { font-family: var(--font-data); font-size: 0.7rem; color: var(--c-gray-text); letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; margin-top: 5px; }
+
+@media (max-width: 900px) {
+    .missionTechRing, .missionTechRingInner { display: none; }
+    .missionDataNodes { flex-direction: column; gap: 20px; width: 100%; }
+    .mDataNode { width: 100%; }
+}

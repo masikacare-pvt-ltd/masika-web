@@ -1,0 +1,53 @@
+.aboutSection { background: transparent; position: relative; overflow: hidden; }
+.aboutLayout { display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: flex-start; gap: 60px; width: 100%; max-width: 1200px; margin: 0 auto; }
+.aboutVisualSide { position: relative; width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 40px; }
+
+.aboutMicroUi {
+    position: absolute; background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(232, 26, 45, 0.15); border-radius: 50px;
+    padding: 8px 16px; display: flex; align-items: center; gap: 8px;
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.03); z-index: 20; pointer-events: none;
+}
+.amu1 { top: 12%; right: -2%; animation: floatPulseCore 4s infinite alternate; }
+.amu2 { bottom: 18%; left: -2%; border-radius: 8px; flex-direction: column; align-items: flex-start; padding: 12px 18px; animation: floatPulseCore 5s infinite alternate-reverse; gap: 4px; }
+.amuDot { width: 6px; height: 6px; background: var(--hero-accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent-glow); animation: recBlink 2s infinite; }
+.amuText { font-family: var(--font-data); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.15em; color: var(--c-dark); }
+.amuLabel { font-family: var(--font-data); font-size: 0.55rem; color: var(--c-gray-text); letter-spacing: 0.2em; text-transform: uppercase; line-height: 1;}
+.amuVal { font-family: var(--font-data); font-size: 1rem; color: var(--hero-accent); font-weight: 700; line-height: 1;}
+.aboutDecorLine { position: absolute; left: 0%; top: 15%; bottom: 15%; width: 1px; background: linear-gradient(to bottom, transparent, rgba(232,26,45,0.2), transparent); z-index: 0; }
+
+.cycleInfographic { position: relative; width: 100%; max-width: 480px; aspect-ratio: 1; }
+.cycleInfographic::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 85%; height: 85%; background: radial-gradient(circle, rgba(232, 26, 45, 0.04) 0%, transparent 60%); z-index: 0; pointer-events: none; }
+.uterusCenter { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 45%; z-index: 10; animation: floatPulse 6s ease-in-out infinite; filter: drop-shadow(0 20px 40px rgba(232, 26, 45, 0.08)) drop-shadow(0 4px 8px rgba(10,10,10,0.06)); mix-blend-mode: multiply; }
+
+@keyframes floatPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -52%) scale(1.03); } }
+@keyframes floatPulseCore { 0% { transform: translateY(-3px); } 100% { transform: translateY(3px); } }
+@keyframes recBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+
+.cycleSvg { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; overflow: visible; }
+.animDashRotate { transform-origin: 350px 350px; animation: rotateSlowly 25s linear infinite; }
+.animDashRotateRev { transform-origin: 350px 350px; animation: rotateSlowlyRev 20s cubic-bezier(0.4, 0.0, 0.2, 1) infinite; }
+@keyframes rotateSlowly { 100% { transform: rotate(360deg); } }
+@keyframes rotateSlowlyRev { 100% { transform: rotate(-360deg); } }
+.pulseDotAnim { animation: subtlePulse 2.5s infinite alternate; transform-origin: center; }
+.pdDelay1 { animation-delay: 0.5s; } .pdDelay2 { animation-delay: 1.2s; } .pdDelay3 { animation-delay: 1.8s; }
+@keyframes subtlePulse { 0% { opacity: 0.5; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.3); box-shadow: 0 0 15px var(--accent-glow); } }
+
+.aboutTextSide { display: flex; flex-direction: column; justify-content: center; padding-right: 2%; position: relative; z-index: 2; margin-top: 80px; }
+.minimalNum { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; }
+.minimalNum .num { font-family: var(--font-data); font-size: 0.85rem; font-weight: 700; color: var(--hero-accent); letter-spacing: 0.1em; }
+.minimalNum .numLine { width: 40px; height: 1px; background: rgba(10,10,10,0.15); }
+.minimalNum .numLabel { font-family: var(--font-data); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.3em; color: rgba(10,10,10,0.4); text-transform: uppercase; }
+
+
+.aboutTextSide p { font-size: 1.1rem; line-height: 1.8; margin-bottom: 25px; color: var(--c-gray-text); font-weight: 400;}
+
+@media (max-width: 1024px) {
+    .aboutLayout { grid-template-columns: 1fr; gap: 60px; }
+}
+
+@media (max-width: 900px) {
+    .aboutTextSide { margin-top: 40px; padding-right: 0; }
+    .aboutMicroUi { display: none; }
+}

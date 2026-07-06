@@ -1,0 +1,326 @@
+{
+  "founder": {
+    "id": "founder",
+    "hudBgText": "01.CORE",
+    "profileLabel": "COMMAND CORE : 01",
+    "nameUi": "Vishma",
+    "nameCine": "Pasayat",
+    "description": "Behind every model he builds lies a human problem waiting to be solved. Witnessing the impact of limited menstrual health awareness, he set out to bridge the gap through AI, language technologies, and scalable healthcare intelligence. Today, he's building systems designed to democratize menstrual health support at population scale.",
+    "bullets": [
+      "Lead System Architect",
+      "Healthcare Intelligence Integration",
+      "AI & Language Technologies",
+      "Population-Scale System Design"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/vishmapasayat/",
+      "https://x.com/coderpawn0101",
+      "https://github.com/Vishma333",
+      "https://medium.com/@vishmapasayat003",
+      "mailto:vishmapasayat003@gmail.com"
+    ],
+    "image": "/founder.jpg"
+  },
+  "mrk01": {
+    "id": "mrk01",
+    "hudBgText": "02.NETWORK",
+    "profileLabel": "SCALE PROPULSION : 02",
+    "nameUi": "Bandi",
+    "nameCine": "Vennela",
+    "description": "Having worked with industry leaders like Adani Group, she learned that great brands are built through trust and consistency. Her strength lies in transforming ideas into movements that people connect with. Every campaign she leads is backed by purpose, precision, and persistence.",
+    "bullets": [
+      "VP Marketing Systems",
+      "Brand Trust & Consistency",
+      "Campaign Precision & Persistence",
+      "Transforming Ideas into Movements"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/bandivennela/"
+    ],
+    "image": "/mrk01.jpg"
+  },
+  "mrk02": {
+    "id": "mrk02",
+    "hudBgText": "02.NETWORK",
+    "profileLabel": "SCALE PROPULSION : 02",
+    "nameUi": "Shailasa",
+    "nameCine": "Sadangi",
+    "description": "While technology powers innovation, she ensures its message reaches the people who matter. Through podcasting, narrative design, and strategic communication, she bridges the gap between complex ideas and human understanding. Because the most powerful stories are the ones that create lasting impact.",
+    "bullets": [
+      "Growth Hacker",
+      "Podcasting & Narrative Design",
+      "Strategic Communication",
+      "Human-Centric Storytelling"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/shailasa-sadangi-73aa44376?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+    ],
+    "image": "/mrk02.jpg"
+  },
+  "vded01": {
+    "id": "vded01",
+    "hudBgText": "03.VISUALS",
+    "profileLabel": "CINEMATIC CONTROL : 03",
+    "nameUi": "Hrushikesh",
+    "nameCine": "Das",
+    "description": "At the intersection of motion, design, and storytelling, he brings narratives to life frame by frame. With expertise in short-form content, cinematic editing, motion graphics, and visual composition, he crafts experiences that resonate beyond the screen. Because impactful stories deserve equally impactful visuals.",
+    "bullets": [
+      "Lead Motion Director",
+      "Cinematic Editing & Visual Composition",
+      "Short-Form Content Expertise",
+      "Frame-by-Frame Narrative Storytelling"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/hrushikesh-das-59b9a5400?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "https://www.instagram.com/hrx.das?igsh=czYzenVleTQ4NWJt",
+      "https://x.com/Hrushikesh404"
+    ],
+    "image": "/vded01.jpg"
+  },
+  "vded02": {
+    "id": "vded02",
+    "hudBgText": "03.VISUALS",
+    "profileLabel": "CINEMATIC CONTROL : 03",
+    "nameUi": "Zaid",
+    "nameCine": "Haque",
+    "description": "Behind every engaging long-form video lies a rhythm most viewers never notice. With expertise in storytelling, timeline structuring, audio balancing, and cinematic pacing, he shapes content that feels effortless to watch. His craft turns conversations into narratives and footage into memorable experiences.",
+    "bullets": [
+      "Post-Production Expert",
+      "Long-Form Timeline Structuring",
+      "Audio Balancing & Pacing",
+      "Narrative Crafting"
+    ],
+    "socials": [
+      "https://www.instagram.com/zaid.visualz/?hl=en"
+    ],
+    "image": "/vded02.jpg"
+  },
+  "cc01": {
+    "id": "cc01",
+    "hudBgText": "04.NARRATIVE",
+    "profileLabel": "PSYCHOMETRIC LOGIC : 04",
+    "nameUi": "Biswajit",
+    "nameCine": "Budek",
+    "description": "In a space where many hesitate to speak, he chose to start the conversation. Through his Instagram series MEN Talk Menstruation, he creates impactful short-form content that transforms awareness into understanding.",
+    "bullets": [
+      "Head of Narrative",
+      "Creator of 'MEN Talk Menstruation'",
+      "Purpose-Driven Storytelling",
+      "Menstrual Health Normalization"
+    ],
+    "socials": [
+      "https://www.instagram.com/biswajit_0608/?hl=en"
+    ],
+    "image": "/cc01.jpg"
+  },
+  "cc02": {
+    "id": "cc02",
+    "hudBgText": "04.NARRATIVE",
+    "profileLabel": "PSYCHOMETRIC LOGIC : 04",
+    "nameUi": "G.",
+    "nameCine": "Rani",
+    "description": "She turns evidence-based insights into stories people genuinely want to watch. With expertise in educational reels, long-form awareness content, and health communication, she simplifies menstrual health topics into engaging, impactful narratives. Because informed communities begin with accessible knowledge.",
+    "bullets": [
+      "Informative Content Creator",
+      "Evidence-Based Storytelling",
+      "Educational Reels & Long-Form Content",
+      "Health Communication"
+    ],
+    "socials": [
+      "https://www.instagram.com/takeshi_takia?igsh=MWxwZnIwZGo4bDBqOQ==",
+      "mailto:grani31082006@gmail.com"
+    ],
+    "image": "/cc02.jpg"
+  },
+  "cc03": {
+    "id": "cc03",
+    "hudBgText": "04.NARRATIVE",
+    "profileLabel": "PSYCHOMETRIC LOGIC : 04",
+    "nameUi": "Sriya",
+    "nameCine": "Anindita",
+    "description": "She turns every frame into a powerful story through natural performances and genuine emotion. Her presence brings authenticity to every visual narrative.",
+    "bullets": [
+      "Creative Performer",
+      "Natural & Authentic Acting",
+      "Emotion-Driven Storytelling",
+      "Visual Narrative Enhancement"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/sriya-anindita-0718362b7?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "https://www.instagram.com/__.sriyaaaaa.__?igsh=NDM2NXIxaDZhcXIw",
+      "mailto:alokrana528@gmail.com"
+    ],
+    "image": "/cc03.jpg"
+  },
+  "cc04": {
+    "id": "cc04",
+    "hudBgText": "04.NARRATIVE",
+    "profileLabel": "PSYCHOMETRIC LOGIC : 04",
+    "nameUi": "Masika",
+    "nameCine": "Creator",
+    "description": "Health Guide. Node architecture currently syncing. Full aesthetic overview and narrative metrics will be established shortly.",
+    "bullets": [],
+    "socials": [],
+    "image": "/cc04.jpg"
+  },
+  "smm01": {
+    "id": "smm01",
+    "hudBgText": "05.SYNERGY",
+    "profileLabel": "OMNI-CHANNEL OPS : 05",
+    "nameUi": "Happy",
+    "nameCine": "Singh",
+    "description": "Driving strategy behind every campaign. He leads social media management, guides the team, and keeps every initiative aligned with purpose and growth.",
+    "bullets": [
+      "Social Media Strategy & Community Lead",
+      "Campaign Strategy & Management",
+      "Team Leadership & Guidance",
+      "Purpose-Driven Growth Alignment"
+    ],
+    "socials": [],
+    "image": "/smm01.jpg"
+  },
+  "smm02": {
+    "id": "smm02",
+    "hudBgText": "05.SYNERGY",
+    "profileLabel": "OMNI-CHANNEL OPS : 05",
+    "nameUi": "Neha",
+    "nameCine": "Bajaj",
+    "description": "She leads social media execution with a focus on consistency, engagement, and brand growth. Every campaign she manages is designed to build lasting connections with the community.",
+    "bullets": [
+      "Digital Growth & Social Media Manager",
+      "Social Media Execution & Strategy",
+      "Brand Growth & Consistency",
+      "Community Connection Building"
+    ],
+    "socials": [
+      "https://www.instagram.com/bajajnehakaran?igsh=MWk4cmw2d2IyMXVyMQ%3D%3D&utm_source=qr",
+      "mailto:neha.bajaj00074@gmail.com"
+    ],
+    "image": "/smm02.jpg"
+  },
+  "smm03": {
+    "id": "smm03",
+    "hudBgText": "05.SYNERGY",
+    "profileLabel": "OMNI-CHANNEL OPS : 05",
+    "nameUi": "Divya",
+    "nameCine": "Nireekshana",
+    "description": "She drives the team's digital presence through strategic leadership and disciplined execution. With expertise in social media, campaign planning, and event coordination, she ensures every initiative is delivered with excellence.",
+    "bullets": [
+      "Communications & Social Media Lead",
+      "Strategic Leadership & Execution",
+      "Campaign Planning",
+      "Event Coordination"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/divyanireekshana-m-8ba364380?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "https://x.com/DN_reads",
+      "https://www.instagram.com/x_divinehope_x/",
+      "mailto:nireekshana0000@gmail.com"
+    ],
+    "image": "/smm03.jpg"
+  },
+  "smm04": {
+    "id": "smm04",
+    "hudBgText": "05.SYNERGY",
+    "profileLabel": "OMNI-CHANNEL OPS : 05",
+    "nameUi": "Uma",
+    "nameCine": "Ballav",
+    "description": "Every memorable story begins with a clear vision. Blending creative direction with expressive narration, he crafts stories that captivate, inspire, and stay with the audience.",
+    "bullets": [
+      "Story Director & Narrative Lead",
+      "Creative Vision & Direction",
+      "Expressive Narration",
+      "Captivating Audience Engagement"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/umaballav-behera-0bba2441b?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+      "https://www.instagram.com/tottalynot.uma/",
+      "mailto:bumaballav@gmail.com"
+    ],
+    "image": "/smm04.jpg"
+  },
+  "dev01": {
+    "id": "dev01",
+    "hudBgText": "06.DEV",
+    "profileLabel": "ENGINEERING CORE : 06",
+    "nameUi": "Varun Kumar",
+    "nameCine": "Goud",
+    "description": "From architecture to deployment, he leads the development of robust web and mobile platforms. His expertise in full-stack engineering ensures every product is scalable, efficient, and built for long-term growth.",
+    "bullets": [
+      "Lead Full-Stack Engineer",
+      "Robust Web & Mobile Platforms",
+      "Scalable Product Architecture",
+      "Long-Term Growth Engineering"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/varun-140a192a1?utm_source=share_via&utm_content=profile&utm_medium=member_android",
+      "https://x.com/VarunUnfiltered",
+      "https://github.com/Varunnn47",
+      "https://www.instagram.com/varunnnnnn47?igsh=MWtvdDI2Zms4eGNkdA==",
+      "https://varunnn47.github.io/Portfolio/"
+    ],
+    "image": "/dev01.jpg"
+  },
+  "dev02": {
+    "id": "dev02",
+    "hudBgText": "06.DEV",
+    "profileLabel": "ENGINEERING CORE : 06",
+    "nameUi": "Panendra",
+    "nameCine": "Jadav",
+    "description": "He engineers the infrastructure that powers intelligent applications. With deep expertise in AI agents, API architecture, and backend systems, he builds reliable foundations for scalable, autonomous experiences.",
+    "bullets": [
+      "AI Infrastructure & API Architect",
+      "Backend System Engineering",
+      "Scalable Autonomous Experiences",
+      "Intelligent Application Development"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/panendra-jadav-6b458a27a",
+      "https://x.com/panendrajadav",
+      "https://github.com/panendrajadav",
+      "https://panendrajadav.github.io/Portfolio/"
+    ],
+    "image": "/dev02.jpg"
+  },
+  "dev03": {
+    "id": "dev03",
+    "hudBgText": "06.DEV",
+    "profileLabel": "ENGINEERING CORE : 06",
+    "nameUi": "Thanuj",
+    "nameCine": "Reddy",
+    "description": "He builds responsive, high-performance web experiences with precision and scalability. Focused on clean architecture and seamless user experiences, he transforms ideas into reliable digital products.",
+    "bullets": [
+      "Full Stack Developer",
+      "Responsive Web Experiences",
+      "Clean Architecture Modeling",
+      "Reliable Digital Products"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/thanuj-reddy-b0699a2ba",
+      "https://thanuj-20.github.io/Portfolio/#home",
+      "https://github.com/thanuj-20",
+      "https://www.instagram.com/thanuj.11?igsh=MWI2dWg0OWI0MDkzeA=="
+    ],
+    "image": "/dev03.jpg"
+  },
+  "dev04": {
+    "id": "dev04",
+    "hudBgText": "06.DEV",
+    "profileLabel": "ENGINEERING CORE : 06",
+    "nameUi": "Lanke Kiran",
+    "nameCine": "Teja",
+    "description": "He specializes in developing robust, scalable mobile applications with precision and performance at the core. His engineering expertise turns innovative concepts into reliable, user-centric mobile experiences.",
+    "bullets": [
+      "Lead Mobile App Developer",
+      "Robust & Scalable Mobile Apps",
+      "Precision & Performance Engineering",
+      "User-Centric Mobile Experiences"
+    ],
+    "socials": [
+      "https://www.linkedin.com/in/kirantejalanke",
+      "http://Kiranteja.me",
+      "mailto:kiranlanke824@gmail.com"
+    ],
+    "image": "/dev04.jpg"
+  }
+}

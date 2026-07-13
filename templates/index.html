@@ -1696,7 +1696,120 @@
                 flex: none;
             }
         }
-    </style>
+
+    
+        /* MOBILE RESPONSIVE - Full stack layout */
+        @media (max-width: 768px) {
+            *, *::before, *::after {
+                box-sizing: border-box !important;
+            }
+            html, body {
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                width: 100% !important;
+            }
+
+            /* Stack the two-column grid vertically */
+            .profile-matrix {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 80px 20px 60px 20px !important;
+                gap: 28px !important;
+                height: auto !important;
+                min-height: auto !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Back button at top */
+            .nav-back {
+                top: 20px !important;
+                left: 20px !important;
+            }
+
+            /* Visual sector - center aligned */
+            .visual-sector {
+                width: 100% !important;
+                align-items: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            /* Image frame - responsive width, portrait ratio */
+            .premium-frame {
+                width: min(72vw, 260px) !important;
+                aspect-ratio: 3 / 4 !important;
+                padding: 12px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Social icons row */
+            .social-matrix {
+                gap: 12px !important;
+                max-width: 100% !important;
+            }
+
+            /* Right/data sector - full width, no clipping */
+            .data-sector {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: visible !important;
+            }
+
+            /* Corner decoration - tighten & give symmetrical padding to avoid cutoff */
+            .creative-corner-wrap {
+                padding: 30px 20px 30px 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Name - responsive, no overflow */
+            .hybrid-name {
+                font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
+                margin-bottom: 14px !important;
+                word-break: break-word !important;
+            }
+            .hybrid-name .n-cine {
+                padding-left: 0 !important;
+            }
+
+            /* Description - full width, no right clip */
+            .aesthetic-desc {
+                font-size: 0.9rem !important;
+                max-width: 100% !important;
+                margin-bottom: 20px !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+
+            /* Bullets - tighter */
+            .data-bullets {
+                gap: 12px !important;
+            }
+            .bullet-item {
+                font-size: 0.9rem !important;
+            }
+
+            /* Profile label */
+            .profile-label {
+                font-size: 0.65rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            /* HUD bg text - smaller so it doesn't cause overflow */
+            .hud-bg-text {
+                font-size: 20vw !important;
+                opacity: 0.3 !important;
+                right: 0 !important;
+                overflow: hidden !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -2812,14 +2925,20 @@
                 });
                 
                 if (response.ok) {
-                    contactSubmitBtn.classList.remove('form-submitting');
-                    contactFormWrapper.style.display = 'none';
-                    contactSuccessMsg.style.display = 'flex';
-                    contactSuccessMsg.style.opacity = '0';
-                    setTimeout(() => {
-                        contactSuccessMsg.style.transition = 'opacity 0.5s ease';
-                        contactSuccessMsg.style.opacity = '1';
-                    }, 50);
+                    const result = await response.json().catch(() => ({}));
+                    if (result.success) {
+                        contactSubmitBtn.classList.remove('form-submitting');
+                        contactFormWrapper.style.display = 'none';
+                        contactSuccessMsg.style.display = 'flex';
+                        contactSuccessMsg.style.opacity = '0';
+                        setTimeout(() => {
+                            contactSuccessMsg.style.transition = 'opacity 0.5s ease';
+                            contactSuccessMsg.style.opacity = '1';
+                        }, 50);
+                    } else {
+                        alert(result.message || "Submission failed. Please check your details and try again.");
+                        contactSubmitBtn.classList.remove('form-submitting');
+                    }
                 } else {
                     alert("Something went wrong. Please try again later.");
                     contactSubmitBtn.classList.remove('form-submitting');
@@ -2883,7 +3002,7 @@
             isPlaying = !isPlaying;
             if(isPlaying) {
                 musicToggle.classList.remove('music-paused');
-                masikaAudio.play();
+                masikaAudio.play().catch(() => {});
                 musicTooltip.innerText = "Pause Anthem";
             } else {
                 musicToggle.classList.add('music-paused');
@@ -2892,21 +3011,35 @@
             }
         });
 
-        // GSAP Scroll
-        gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+        // GSAP Scroll (guarded so a failed CDN never breaks the rest of the page)
+        const hasGSAP = typeof gsap !== 'undefined';
+        const hasST = hasGSAP && typeof ScrollTrigger !== 'undefined';
+        if (hasST) gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
         const premiumScrollBtn = document.getElementById('premiumScrollBtn');
         if (premiumScrollBtn) {
             premiumScrollBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                gsap.to(window, { duration: 0.8, scrollTo: { y: "#about", offsetY: 0 }, ease: "power3.inOut" });
+                if (hasGSAP) {
+                    gsap.to(window, { duration: 0.8, scrollTo: { y: "#about", offsetY: 0 }, ease: "power3.inOut" });
+                } else {
+                    const target = document.getElementById('about');
+                    if (target) target.scrollIntoView({ behavior: 'smooth' });
+                }
             });
         }
 
         // Hero Init Animation
-        gsap.fromTo(".hero-text-anim", 
-            { y: 50, opacity: 0, rotationX: -25, filter: "blur(12px)" },
-            { y: 0, opacity: 1, rotationX: 0, filter: "blur(0px)", duration: 1.4, stagger: 0.15, ease: "power4.out", delay: 0.2 }
-        );
+        if (hasGSAP) {
+            gsap.fromTo(".hero-text-anim", 
+                { y: 50, opacity: 0, rotationX: -25, filter: "blur(12px)" },
+                { y: 0, opacity: 1, rotationX: 0, filter: "blur(0px)", duration: 1.4, stagger: 0.15, ease: "power4.out", delay: 0.2 }
+            );
+        } else {
+            document.querySelectorAll('.hero-text-anim').forEach(el => {
+                el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none';
+            });
+        }
 
         // Intersection Observer for fade-ups
         const fadeElements = document.querySelectorAll('.fade-up');
@@ -2919,6 +3052,15 @@
             });
         }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
         fadeElements.forEach(el => observer.observe(el));
+
+        // Safety net: if GSAP/animation libs failed to load, force all animated content visible
+        window.addEventListener('load', () => {
+            if (!hasGSAP) {
+                document.querySelectorAll('.fade-up, .hero-text-anim, .blur-anim, .nav-links, .nav-cta').forEach(el => {
+                    el.style.opacity = '1'; el.style.transform = 'none'; el.style.filter = 'none'; el.style.visibility = 'visible';
+                });
+            }
+        });
 
         // 3D Tilt Mechanics
         const cards3D = document.querySelectorAll('.card-3d');
@@ -3023,5 +3165,5 @@
         }
 
     </script>
-</body>
+    </body>
 </html>

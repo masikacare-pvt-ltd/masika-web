@@ -308,6 +308,120 @@
             .sm-watermark-text { display: none; }
             .sm-giant-quote { right: -5%; font-size: 15rem; top: 180px; }
         }
+
+    
+        /* MOBILE RESPONSIVE - Full stack layout */
+        @media (max-width: 768px) {
+            *, *::before, *::after {
+                box-sizing: border-box !important;
+            }
+            html, body {
+                overflow-x: hidden !important;
+                overflow-y: auto !important;
+                height: auto !important;
+                min-height: 100vh !important;
+                width: 100% !important;
+            }
+
+            /* Stack the two-column grid vertically */
+            .profile-matrix {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                padding: 80px 20px 60px 20px !important;
+                gap: 28px !important;
+                height: auto !important;
+                min-height: auto !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Back button at top */
+            .nav-back {
+                top: 20px !important;
+                left: 20px !important;
+            }
+
+            /* Visual sector - center aligned */
+            .visual-sector {
+                width: 100% !important;
+                align-items: center !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            /* Image frame - responsive width, portrait ratio */
+            .premium-frame {
+                width: min(72vw, 260px) !important;
+                aspect-ratio: 3 / 4 !important;
+                padding: 12px !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Social icons row */
+            .social-matrix {
+                gap: 12px !important;
+                max-width: 100% !important;
+            }
+
+            /* Right/data sector - full width, no clipping */
+            .data-sector {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: visible !important;
+            }
+
+            /* Corner decoration - tighten & give symmetrical padding to avoid cutoff */
+            .creative-corner-wrap {
+                padding: 30px 20px 30px 20px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Name - responsive, no overflow */
+            .hybrid-name {
+                font-size: clamp(1.8rem, 7vw, 2.8rem) !important;
+                margin-bottom: 14px !important;
+                word-break: break-word !important;
+            }
+            .hybrid-name .n-cine {
+                padding-left: 0 !important;
+            }
+
+            /* Description - full width, no right clip */
+            .aesthetic-desc {
+                font-size: 0.9rem !important;
+                max-width: 100% !important;
+                margin-bottom: 20px !important;
+                word-break: break-word !important;
+                overflow-wrap: break-word !important;
+            }
+
+            /* Bullets - tighter */
+            .data-bullets {
+                gap: 12px !important;
+            }
+            .bullet-item {
+                font-size: 0.9rem !important;
+            }
+
+            /* Profile label */
+            .profile-label {
+                font-size: 0.65rem !important;
+                flex-wrap: wrap !important;
+            }
+
+            /* HUD bg text - smaller so it doesn't cause overflow */
+            .hud-bg-text {
+                font-size: 20vw !important;
+                opacity: 0.3 !important;
+                right: 0 !important;
+                overflow: hidden !important;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -409,5 +523,5 @@
             });
         });
     </script>
-</body>
+    </body>
 </html>

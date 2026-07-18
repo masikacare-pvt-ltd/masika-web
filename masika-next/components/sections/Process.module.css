@@ -1,0 +1,63 @@
+/* Work Process */
+.processSection { background: transparent; position: relative; overflow: hidden; }
+.processContainer { 
+    display: flex; flex-direction: row; align-items: flex-start; justify-content: space-between; 
+    position: relative; margin-top: 80px; max-width: 1450px; margin-left: auto; margin-right: auto; gap: 40px; 
+}
+
+.bioPipelineWrap {
+    position: absolute; top: -10px; left: 30px; right: calc(17% - 30px); height: 80px;
+    display: flex; align-items: center; perspective: 1200px; z-index: 0; pointer-events: none;
+}
+.bioPipelineCore { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+
+/* Bio Pipeline Node Styles */
+.bioNodeLink {
+    position: absolute; top: 50%; transform: translateY(-50%); width: 2px; height: 60px;
+    display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+}
+.bioNodeLink::before {
+    content: ''; position: absolute; top: 8px; bottom: 8px; width: 1px;
+    background: linear-gradient(to bottom, transparent, rgba(232, 26, 45, 0.25), transparent);
+}
+.bnTop { width: 6px; height: 6px; border-radius: 50%; background: var(--c-red); box-shadow: 0 0 10px var(--accent-glow); }
+.bnBot { width: 4px; height: 4px; border-radius: 50%; background: var(--c-dark); opacity: 0.5; }
+
+@keyframes bioWave3D {
+    0% { transform: translateY(-50%) translateZ(0px) rotateX(0deg); opacity: 0.3; }
+    25% { transform: translateY(-50%) translateZ(25px) rotateX(35deg); opacity: 1; }
+    50% { transform: translateY(-50%) translateZ(0px) rotateX(0deg); opacity: 0.3; }
+    75% { transform: translateY(-50%) translateZ(-25px) rotateX(-35deg); opacity: 0.1; }
+    100% { transform: translateY(-50%) translateZ(0px) rotateX(0deg); opacity: 0.3; }
+}
+
+.processStep { 
+    display: flex; flex-direction: column; width: 17%; justify-content: flex-start; align-items: flex-start; 
+    margin-bottom: 0; position: relative; z-index: 2; text-align: left; 
+}
+
+.processContent {
+    width: 100%; padding: 0; border-radius: 0; background: transparent; border: none; box-shadow: none;
+    position: relative; margin-top: 30px; text-align: left;
+}
+
+.pcIdx { font-family: var(--font-data); font-size: 0.7rem; color: var(--c-red); letter-spacing: 0.25em; font-weight: 700; display: block; margin-bottom: 15px; }
+.processContent h4 { font-size: 1.55rem; color: var(--c-dark); margin-bottom: 12px; font-weight: 500; font-family: var(--font-cine); }
+.processContent p { color: var(--c-gray-text); font-size: 0.95rem; line-height: 1.7; }
+
+.stepIcon {
+    position: relative; left: 0; transform: none; width: 60px; height: 60px;
+    background: rgba(255,255,255,0.6); border: 1px solid rgba(232, 26, 45, 0.3); border-radius: 12px;
+    display: flex; justify-content: center; align-items: center; -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.02); transition: all 0.4s var(--ease-cinematic); z-index: 10; margin-bottom: 20px;
+}
+.processStep:hover .stepIcon { transform: translateY(-8px) scale(1.05); border-color: var(--c-red); box-shadow: 0 15px 30px rgba(232,26,45,0.15); background: var(--c-white); }
+.stepIcon svg { width: 28px; height: 28px; stroke: var(--c-dark); transition: 0.5s ease; }
+.processStep:hover .stepIcon svg { stroke: var(--c-red); filter: drop-shadow(0 0 8px var(--accent-glow)); }
+
+@media (max-width: 1024px) {
+    .processContainer { flex-direction: column; gap: 60px; }
+    .bioPipelineWrap { display: none; }
+    .processStep { width: 100%; text-align: center; align-items: center; }
+    .processContent { text-align: center; }
+}

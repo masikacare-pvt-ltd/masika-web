@@ -1,0 +1,36 @@
+/* Recognition Section */
+.recognition { text-align: left; position: relative; }
+.recogGrid { display: flex; justify-content: space-around; gap: 40px; flex-wrap: wrap; max-width: 1400px; margin: 0 auto; }
+
+.recogBlock { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; max-width: 650px; }
+.recogFrameWrapper { display: flex; align-items: center; justify-content: center; gap: 0; width: 100%; position: relative; }
+
+.laurelSide { width: clamp(80px, 15vw, 190px); height: auto; object-fit: contain; transition: transform 0.6s var(--ease-cinematic); margin: 0 calc(clamp(80px, 15vw, 190px) * -0.18); position: relative; z-index: 2; }
+.recogBlock:hover .laurelSide { filter: drop-shadow(0 0 10px var(--accent-glow)); transform: scale(1.05); }
+
+.recogItem {
+    padding: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+    width: 100%; aspect-ratio: 1.414 / 1;
+    background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,255,255,0.5));
+    border: 2px solid rgba(10,10,10,0.08);
+    border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.02), inset 0 2px 2px #FFF;
+    transition: all 0.6s var(--ease-cinematic); position: relative; overflow: hidden;
+    cursor: pointer;
+}
+.recogItem::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%); opacity: 0; transition: 0.6s ease; z-index: 0; mix-blend-mode: multiply; }
+.recogBlock:hover .recogItem { 
+    border-color: var(--c-red); transform: translateY(-10px); 
+    box-shadow: 0 25px 50px rgba(232, 26, 45, 0.1), inset 0 2px 2px #FFF, inset 0 0 20px rgba(232,26,45,0.05); 
+}
+.recogBlock:hover .recogItem::before { opacity: 0.4; }
+
+.recogItemImg { width: 100%; height: 100%; object-fit: contain; border-radius: 18px; position: relative; z-index: 1; }
+
+.recogTextContainer { text-align: center; }
+.recogTextContainer span { font-size: 1.6rem; font-family: var(--font-cine); color: var(--c-dark); font-weight: 500; font-style: italic; display: block; }
+.recogTextContainer p { font-size: 0.75rem; font-family: var(--font-data); color: var(--c-gray-text); font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 8px; }
+
+@media (max-width: 900px) {
+    .recogGrid { flex-direction: column; align-items: center; }
+    .laurelSide { width: 80px; margin: 0 -10px; }
+}

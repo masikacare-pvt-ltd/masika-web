@@ -11,17 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,800;1,400&family=Outfit:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
     
     <!-- GSAP for Entry Micro-Interactions -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js">
-        function scrollToNextSlide() {
-            const isMobile = window.innerWidth <= 1024;
-            if (isMobile) {
-                container.scrollBy({top: window.innerHeight, behavior: 'smooth'});
-            } else {
-                container.scrollBy({left: window.innerWidth, behavior: 'smooth'});
-            }
-        }
-
-</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
@@ -85,31 +75,32 @@
             width: 100vw;
             height: 100vh;
             height: 100dvh;
-            overflow-x: hidden; /* Lock horizontal gesture scrolling */
+            overflow-x: scroll;
             overflow-y: hidden;
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
+            /* NO scroll-snap here — JS handles all navigation precisely */
+            /* NO scroll-behavior here — passed in scrollTo() calls instead */
             -ms-overflow-style: none;  
-            scrollbar-width: none;  
+            scrollbar-width: none;
+        }
+        .stacking-container::-webkit-scrollbar {
+            display: none;
         }
 
         .slide {
             flex: 0 0 100vw;
             width: 100vw;
-            height: 100%;
-            scroll-snap-align: start;
+            height: 100vh;
+            height: 100dvh;
+            scroll-snap-align: none; /* No snap — buttons only */
             position: relative;
             background-color: var(--c-bg);
-            /* Soft shadow simulating page overlap */
             box-shadow: -15px 0 30px rgba(0,0,0,0.03);
             border-left: 1px solid rgba(255,255,255,0.5);
             display: flex;
-            align-items: safe center;
+            align-items: flex-start;
             justify-content: center;
             overflow-y: auto;
             overflow-x: hidden;
-            
-            /* Book Paper Textures */
             background-image: 
                 radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, transparent 80%),
                 linear-gradient(to right, rgba(7,9,15,0.015) 1px, transparent 1px),
@@ -133,7 +124,7 @@
             z-index: 10;
             display: flex;
             flex-direction: column;
-            justify-content: safe center;
+            justify-content: center; /* removed 'safe' — not universally supported */
         }
 
         /* Top Header Area for Categories */
@@ -296,7 +287,7 @@
         
         
         /* MEDIA QUERIES FOR RESPONSIVE PRESENTATION */
-        @media (max-width: 1024px), (max-height: 700px) {
+        @media (max-width: 1024px) {
             *, *::before, *::after {
                 box-sizing: border-box !important;
             }
@@ -311,9 +302,9 @@
                 height: 100vh !important;
                 height: 100dvh !important;
                 overflow-x: hidden !important;
-                overflow-y: auto !important;
-                scroll-snap-type: y mandatory !important;
-                scroll-behavior: smooth !important;
+                overflow-y: scroll !important;
+                /* No snap at all — buttons navigate, touch just scrolls content */
+                scroll-snap-type: none !important;
                 -ms-overflow-style: none;
                 scrollbar-width: none;
             }
@@ -325,13 +316,16 @@
                 min-height: 100vh !important;
                 min-height: 100dvh !important;
                 height: auto !important;
-                scroll-snap-align: start !important;
+                scroll-snap-align: none !important;  /* No snap */
+                scroll-snap-stop: normal !important;
                 border-left: none !important;
                 box-shadow: none !important;
                 padding: 40px 0 !important;
                 display: flex !important;
-                align-items: center !important;
+                align-items: flex-start !important;
                 justify-content: center !important;
+                overflow-y: visible !important;
+                overflow-x: hidden !important;
                 background-size: 100% 100%, 40px 40px, 40px 40px !important;
             }
             .slide::before {
@@ -753,9 +747,9 @@
                 
                 <p class="splash-p gsap-reveal">Meet the elite nodes driving our deep tech proprietary models, crafting cinematic designs, scaling ecosystems, and relentlessly eliminating traditional boundaries.</p>
 
-                <div class="swipe-indicator gsap-reveal" style="cursor: pointer;" onclick="document.querySelector('.stacking-container').scrollBy({left: window.innerWidth, behavior: 'smooth'})">
-                    Swipe Page 
-                    <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round"/></svg>
+                <div class="swipe-indicator gsap-reveal" id="swipe-indicator-btn" style="cursor: pointer;">
+                    <span id="swipe-label">Swipe Page</span>
+                    <svg id="swipe-arrow" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round"/></svg>
                 </div>
             </div>
         </div>
@@ -1254,137 +1248,148 @@ His engineering expertise turns innovative concepts into reliable, user-centric 
 
     <!-- GSAP & SCROLL LOGIC FOR HORIZONTAL BOOK ANIMATION -->
     <script>
-        
-        
-        
-        // Init GSAP
         gsap.registerPlugin(ScrollTrigger);
 
         const container = document.querySelector('.stacking-container');
         const slides = document.querySelectorAll('.slide');
         const totalSlides = slides.length;
-        
         let currentSlideIndex = 0;
+        let isScrolling = false;
 
-        // Block vertical mouse wheel / trackpad scrolling to prevent unintended slides sliding
-        container.addEventListener('wheel', (e) => {
-            if (window.innerWidth > 1024) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Update book navigation controls state
-        function updateBookControls() {
-            const isMobile = window.innerWidth <= 1024;
-            const scrollPos = isMobile ? container.scrollTop : container.scrollLeft;
-            const slideSize = isMobile ? window.innerHeight : window.innerWidth;
-            
-            const activeIndex = Math.round(scrollPos / slideSize);
-            currentSlideIndex = activeIndex;
-            
-            const pageNumElem = document.getElementById('current-page-num');
-            if (pageNumElem) {
-                pageNumElem.textContent = String(activeIndex + 1).padStart(2, '0');
-            }
-            
-            const prevBtn = document.querySelector('.prev-btn');
-            const nextBtn = document.querySelector('.next-btn');
-            
-            if (prevBtn) {
-                if (activeIndex === 0) {
-                    prevBtn.classList.add('disabled');
-                } else {
-                    prevBtn.classList.remove('disabled');
-                }
-            }
-            
-            if (nextBtn) {
-                if (activeIndex === totalSlides - 1) {
-                    nextBtn.classList.add('disabled');
-                } else {
-                    nextBtn.classList.remove('disabled');
-                }
-            }
+        function isMobile() {
+            return window.innerWidth <= 1024;
         }
 
-        // Listen to container scroll/resize
-        container.addEventListener('scroll', updateBookControls);
-        window.addEventListener('resize', updateBookControls);
+        /* ── PAGE COUNTER ─────────────────────────────────── */
+        function updatePageNum(index) {
+            const el = document.getElementById('current-page-num');
+            if (el) el.textContent = String(index + 1).padStart(2, '0');
 
-        // Slide navigation functions
-        function scrollToNextSlide() {
-            if (currentSlideIndex < totalSlides - 1) {
-                scrollSlideToIndex(currentSlideIndex + 1);
-            }
+            const prev = document.querySelector('.prev-btn');
+            const next = document.querySelector('.next-btn');
+            if (prev) prev.classList.toggle('disabled', index === 0);
+            if (next) next.classList.toggle('disabled', index === totalSlides - 1);
         }
 
-        function scrollToPrevSlide() {
-            if (currentSlideIndex > 0) {
-                scrollSlideToIndex(currentSlideIndex - 1);
-            }
-        }
-
-        function scrollSlideToIndex(index) {
-            const isMobile = window.innerWidth <= 1024;
-            if (isMobile) {
-                container.scrollTo({
-                    top: index * window.innerHeight,
-                    behavior: 'smooth'
-                });
+        /* ── GOTO SLIDE ────────────────────────────────────── */
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides) return;
+            currentSlideIndex = index;
+            if (isMobile()) {
+                container.scrollTo({ top: index * window.innerHeight, behavior: 'smooth' });
             } else {
-                container.scrollTo({
-                    left: index * window.innerWidth,
-                    behavior: 'smooth'
-                });
+                container.scrollTo({ left: index * window.innerWidth, behavior: 'smooth' });
             }
+            updatePageNum(index);
         }
 
-        // Horizontal GSAP Reveals (Vertical on Mobile)
-        slides.forEach((slide) => {
-            const revealElements = slide.querySelectorAll('.gsap-reveal');
-            
-            if(revealElements.length > 0) {
-                const isMobile = window.innerWidth <= 1024;
-                gsap.fromTo(revealElements, 
-                    {
-                        x: isMobile ? 0 : 40,
-                        y: isMobile ? 30 : 0,
-                        opacity: 0,
-                        filter: "blur(5px)"
-                    },
-                    {
-                        x: 0,
-                        y: 0,
-                        opacity: 1,
-                        filter: "blur(0px)",
-                        duration: 1.2,
-                        stagger: 0.1,
-                        ease: "power4.out",
-                        scrollTrigger: {
-                            trigger: slide,
-                            scroller: container, // Target container
-                            horizontal: !isMobile,    // Tell GSAP whether it is horizontal scrolling
-                            start: isMobile ? "top 85%" : "left 80%",   // Trigger when slide enters view
-                            toggleActions: "play none none reverse"
-                        }
-                    }
-                );
+        /* ── PUBLIC FUNCTIONS (called by onclick) ──────────── */
+        function scrollToNextSlide() { goToSlide(currentSlideIndex + 1); }
+        function scrollToPrevSlide() { goToSlide(currentSlideIndex - 1); }
+
+        /* ── SYNC INDEX ON SCROLL ──────────────────────────── */
+        container.addEventListener('scroll', () => {
+            const pos  = isMobile() ? container.scrollTop  : container.scrollLeft;
+            const size = isMobile() ? window.innerHeight   : window.innerWidth;
+            const idx  = Math.round(pos / size);
+            if (idx !== currentSlideIndex) {
+                currentSlideIndex = idx;
+                updatePageNum(idx);
             }
         });
 
-        // Adjust Swipe/Scroll down indicator
-        if (window.innerWidth <= 1024) {
-            const swipeIndicator = document.querySelector('.swipe-indicator');
-            if (swipeIndicator) {
-                swipeIndicator.innerHTML = 'Scroll Down <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke-width="2" stroke-linecap="round"/></svg>';
-                swipeIndicator.onclick = () => {
-                    container.scrollBy({top: window.innerHeight, behavior: 'smooth'});
-                };
+        /* ── TOUCH: ONE SWIPE = ONE PAGE ───────────────────── */
+        // Intercept all touch on the container.
+        // Prevent free-scroll. Detect direction and jump exactly one page.
+        let txStart = 0, tyStart = 0, locked = false;
+
+        container.addEventListener('touchstart', (e) => {
+            txStart = e.touches[0].clientX;
+            tyStart = e.touches[0].clientY;
+            locked  = false;
+        }, { passive: true });
+
+        container.addEventListener('touchmove', (e) => {
+            // Block the browser from free-scrolling the container
+            e.preventDefault();
+        }, { passive: false });
+
+        container.addEventListener('touchend', (e) => {
+            if (locked) return;
+            const dx = txStart - e.changedTouches[0].clientX;
+            const dy = tyStart - e.changedTouches[0].clientY;
+
+            // Need at least 30px in the dominant direction
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 30) return;
+
+            locked = true; // one action per gesture
+
+            if (isMobile()) {
+                // Mobile = vertical layout: swipe up → next, swipe down → prev
+                if (Math.abs(dy) >= Math.abs(dx)) {
+                    if (dy > 0) scrollToNextSlide();
+                    else        scrollToPrevSlide();
+                }
+            } else {
+                // Desktop = horizontal layout: swipe left → next, swipe right → prev
+                if (Math.abs(dx) >= Math.abs(dy)) {
+                    if (dx > 0) scrollToNextSlide();
+                    else        scrollToPrevSlide();
+                }
             }
+        }, { passive: true });
+
+        /* ── SWIPE INDICATOR BUTTON ────────────────────────── */
+        const swipeBtn = document.getElementById('swipe-indicator-btn');
+        if (swipeBtn) {
+            swipeBtn.addEventListener('click', scrollToNextSlide);
+
+            function updateSwipeLabel() {
+                const label = document.getElementById('swipe-label');
+                const arrow = document.getElementById('swipe-arrow');
+                const mobile = isMobile();
+                if (label) label.textContent = mobile ? 'Scroll Down' : 'Swipe Page';
+                if (arrow) arrow.style.transform = mobile ? 'rotate(90deg)' : 'none';
+            }
+            updateSwipeLabel();
+            window.addEventListener('resize', updateSwipeLabel);
         }
 
-        // Perform initial UI updates
-        updateBookControls();
-</script>
+        /* ── GSAP REVEALS ──────────────────────────────────── */
+        function initGsapReveals() {
+            ScrollTrigger.getAll().forEach(t => t.kill());
+            const mobile = isMobile();
+
+            slides.forEach((slide) => {
+                const els = slide.querySelectorAll('.gsap-reveal');
+                if (!els.length) return;
+
+                gsap.fromTo(els,
+                    { x: mobile ? 0 : 40, y: mobile ? 30 : 0, opacity: 0, filter: 'blur(5px)' },
+                    {
+                        x: 0, y: 0, opacity: 1, filter: 'blur(0px)',
+                        duration: 1.2, stagger: 0.1, ease: 'power4.out',
+                        scrollTrigger: {
+                            trigger: slide,
+                            scroller: container,
+                            horizontal: !mobile,
+                            start: mobile ? 'top 85%' : 'left 80%',
+                            toggleActions: 'play none none reverse'
+                        }
+                    }
+                );
+            });
+        }
+
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(initGsapReveals, 250);
+        });
+
+        /* ── INIT ──────────────────────────────────────────── */
+        initGsapReveals();
+        updatePageNum(0);
+    </script>
     </body>
 </html>
